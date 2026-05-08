@@ -21,60 +21,44 @@ document.querySelectorAll('.nav-link').forEach(link => {
 const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('.nav-link');
 
-const observerOptions = {
-  root: null,
-  rootMargin: '-50% 0px -50% 0px',
-  threshold: 0
-};
-
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       const id = entry.target.getAttribute('id');
       navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === '#' + id) {
-          link.classList.add('active');
-        }
+        const isActive = link.getAttribute('href') === '#' + id;
+        link.classList.toggle('active', isActive);
       });
     }
   });
-}, observerOptions);
+}, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
 
 sections.forEach(section => observer.observe(section));
 
-// Language switching
+// Language switching — inner text is canonical zh, data-en holds en translation.
+// Cache original zh text once, restore from cache when switching back from en.
+const STORAGE_KEY = 'lang';
 const langSwitch = document.getElementById('langSwitch');
-let currentLang = 'zh';
+const i18nElements = document.querySelectorAll('[data-en]');
+const zhCache = new WeakMap();
 
-function switchLanguage() {
-  currentLang = currentLang === 'zh' ? 'en' : 'zh';
+i18nElements.forEach(el => zhCache.set(el, el.textContent));
 
-  // Update switch button text
-  if (langSwitch) {
-    langSwitch.textContent = langSwitch.getAttribute('data-' + currentLang);
-  }
-
-  // Update all elements with data-zh and data-en
-  document.querySelectorAll('[data-zh][data-en]').forEach(el => {
-    const newText = el.getAttribute('data-' + currentLang);
-    if (newText) {
-      // For elements with child elements (like footer), set innerHTML
-      if (el.tagName === 'FOOTER' || el.querySelector('*')) {
-        // Only update if it's a simple text element or has the attributes directly
-        if (el.children.length === 0) {
-          el.textContent = newText;
-        }
-      } else {
-        el.textContent = newText;
-      }
-    }
+function setLanguage(lang) {
+  i18nElements.forEach(el => {
+    el.textContent = lang === 'en' ? el.getAttribute('data-en') : zhCache.get(el);
   });
-
-  // Update HTML lang attribute
-  document.documentElement.lang = currentLang === 'zh' ? 'zh-CN' : 'en';
+  document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
+  localStorage.setItem(STORAGE_KEY, lang);
 }
 
 if (langSwitch) {
-  langSwitch.addEventListener('click', switchLanguage);
+  langSwitch.addEventListener('click', () => {
+    const next = document.documentElement.lang === 'en' ? 'zh' : 'en';
+    setLanguage(next);
+  });
 }
+
+// Restore persisted language on load
+const saved = localStorage.getItem(STORAGE_KEY);
+if (saved === 'en') setLanguage('en');

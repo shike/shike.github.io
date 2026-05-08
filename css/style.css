@@ -141,6 +141,18 @@ a:hover {
   transition: all 0.3s;
 }
 
+.nav-toggle.active span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.nav-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle.active span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
 /* Hero */
 .hero {
   padding-top: 160px;
@@ -250,7 +262,8 @@ a:hover {
   gap: 24px;
 }
 
-.skill-card {
+.skill-card,
+.project-card {
   background: var(--bg-primary);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -259,7 +272,8 @@ a:hover {
   box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
-.skill-card:hover {
+.skill-card:hover,
+.project-card:hover {
   box-shadow: 0 12px 40px rgba(79,70,229,0.1);
   transform: translateY(-6px);
   border-color: rgba(79,70,229,0.15);
@@ -382,21 +396,6 @@ a:hover {
   gap: 24px;
 }
 
-.project-card {
-  background: var(--bg-primary);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 32px;
-  transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-}
-
-.project-card:hover {
-  box-shadow: 0 12px 40px rgba(79,70,229,0.1);
-  transform: translateY(-6px);
-  border-color: rgba(79,70,229,0.15);
-}
-
 .project-card h3 {
   font-size: 18px;
   font-weight: 700;
@@ -414,15 +413,6 @@ a:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-}
-
-.tag {
-  font-size: 12px;
-  padding: 4px 10px;
-  background: var(--bg-secondary);
-  border-radius: 4px;
-  color: var(--text-secondary);
-  font-weight: 500;
 }
 
 /* Clients */
