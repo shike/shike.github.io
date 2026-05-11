@@ -248,11 +248,17 @@ a:hover {
 }
 
 /* About */
+.about-content {
+  text-align: center;
+}
+
 .about-content p {
   font-size: 16px;
   color: var(--text-secondary);
   margin-bottom: 16px;
   max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Skills */
@@ -459,6 +465,55 @@ a:hover {
   border-color: var(--accent);
   box-shadow: 0 8px 24px rgba(79,70,229,0.2);
   transform: translateY(-3px);
+}
+
+/* Articles */
+.articles-list {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.articles-placeholder {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 15px;
+  padding: 40px 0;
+}
+
+.article-card {
+  display: block;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
+  transition: transform 0.2s;
+}
+
+.article-card:hover {
+  transform: translateX(4px);
+}
+
+.article-card:last-child {
+  border-bottom: none;
+}
+
+.article-date {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.article-card h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+}
+
+.article-card p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
 }
 
 /* Contact */
