@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="40%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#312e81"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="0.15" cy="0.85" r="0.5">
+      <stop offset="0%" stop-color="#6366f1" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="0.85" cy="0.15" r="0.5">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow1)"/>
+  <rect width="1200" height="630" fill="url(#glow2)"/>
+  <g font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif" text-anchor="middle">
+    <text x="600" y="240" fill="#ffffff" font-size="140" font-weight="800" letter-spacing="14">施可</text>
+    <text x="600" y="305" fill="rgba(255,255,255,0.78)" font-size="34" font-weight="500" letter-spacing="6">SHI KE</text>
+    <text x="600" y="400" fill="rgba(255,255,255,0.85)" font-size="32" font-weight="500">AI Agent Founder · Former Linhuiba COO</text>
+    <text x="600" y="450" fill="rgba(255,255,255,0.6)" font-size="22" font-weight="400">Engineer · Product · Enterprise Ops</text>
+    <text x="600" y="540" fill="#818cf8" font-size="22" font-weight="700" letter-spacing="5">DROPLEAP · 水滴跃动</text>
+  </g>
+</svg>
