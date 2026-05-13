@@ -570,6 +570,7 @@ a:hover {
 /* Contact */
 .contact-content {
   text-align: center;
+  font-style: normal;
 }
 
 .contact-desc {

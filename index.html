@@ -8,7 +8,10 @@
   <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
   <meta name="theme-color" content="#4f46e5" media="(prefers-color-scheme: light)">
   <meta name="author" content="Shi Ke">
-  <meta name="keywords" content="施可,Shi Ke,AI Agent,LLM,Dropleap,水滴跃动,邻汇吧,COO,创业者,Multi-Agent,RAG">
+  <meta name="keywords" content="施可,Shi Ke,AI Agent 创业者,LLM 应用,Dropleap,水滴跃动,邻汇吧 COO,中科大,USTC,Multi-Agent,RAG,Tool Use,Agent Eval,企业级 AI,Location 选址,阿里云 AI 大赛">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow">
+  <meta name="generator" content="Hand-written HTML/CSS/JS">
 
   <link rel="canonical" href="https://shike.github.io/">
   <link rel="alternate" hreflang="zh-CN" href="https://shike.github.io/">
@@ -19,56 +22,150 @@
   <meta property="og:title" content="施可 - AI Agent 创业者 / 前邻汇吧 COO">
   <meta property="og:description" content="写过代码、做过产品、经营过大客户、带过商业团队。现在专注用 AI Agent 把这些一线 know-how 装成产品。">
   <meta property="og:url" content="https://shike.github.io/">
-  <meta property="og:image" content="https://shike.github.io/og-cover.svg">
+  <meta property="og:image" content="https://shike.github.io/og-cover.png">
+  <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Shi Ke — AI Agent Founder, Former Linhuiba COO">
   <meta property="og:locale" content="zh_CN">
   <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:site_name" content="施可 · Shi Ke">
   <meta property="profile:first_name" content="Shi">
   <meta property="profile:last_name" content="Ke">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="施可 - AI Agent 创业者 / 前邻汇吧 COO">
   <meta name="twitter:description" content="写过代码、做过产品、经营过大客户、带过商业团队。现在专注用 AI Agent 把这些一线 know-how 装成产品。">
-  <meta name="twitter:image" content="https://shike.github.io/og-cover.svg">
+  <meta name="twitter:image" content="https://shike.github.io/og-cover.png">
+  <meta name="twitter:image:alt" content="Shi Ke — AI Agent Founder">
+  <meta name="twitter:creator" content="@shike">
 
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%234f46e5'/><text x='50' y='72' text-anchor='middle' font-size='60' fill='white' font-weight='700'>施</text></svg>">
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='40' fill='%234f46e5'/><text x='90' y='128' text-anchor='middle' font-size='108' fill='white' font-weight='700'>施</text></svg>">
+  <link rel="me" href="https://github.com/shike">
+  <link rel="me" href="mailto:shike@dropleap.cn">
   <link rel="stylesheet" href="css/style.css">
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "施可",
-    "alternateName": "Shi Ke",
-    "givenName": "可",
-    "familyName": "施",
-    "jobTitle": "Founder, AI Agent",
-    "description": "AI Agent Founder · Former Linhuiba COO",
-    "email": "shike@dropleap.cn",
-    "url": "https://shike.github.io/",
-    "image": "https://shike.github.io/og-cover.svg",
-    "worksFor": {
-      "@type": "Organization",
-      "name": "Dropleap 水滴跃动",
-      "description": "Enterprise AI Implementation Services"
-    },
-    "alumniOf": {
-      "@type": "CollegeOrUniversity",
-      "name": "University of Science and Technology of China"
-    },
-    "knowsAbout": [
-      "AI Agent",
-      "Large Language Models",
-      "Multi-Agent Orchestration",
-      "Retrieval-Augmented Generation",
-      "Product Management",
-      "Enterprise Sales",
-      "Commercial Operations"
-    ],
-    "sameAs": [
-      "https://github.com/shike"
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://shike.github.io/#person",
+        "name": "施可",
+        "alternateName": "Shi Ke",
+        "givenName": "可",
+        "familyName": "施",
+        "jobTitle": "Founder, AI Agent",
+        "description": "AI Agent Founder · Former Linhuiba COO. 16+ years across engineering, product, enterprise sales, and operations.",
+        "email": "shike@dropleap.cn",
+        "url": "https://shike.github.io/",
+        "image": "https://shike.github.io/og-cover.png",
+        "nationality": "Chinese",
+        "worksFor": {
+          "@type": "Organization",
+          "name": "Dropleap 水滴跃动",
+          "description": "Enterprise AI Implementation Services",
+          "founder": { "@id": "https://shike.github.io/#person" }
+        },
+        "alumniOf": {
+          "@type": "CollegeOrUniversity",
+          "name": "University of Science and Technology of China",
+          "alternateName": "中国科学技术大学"
+        },
+        "hasOccupation": {
+          "@type": "Occupation",
+          "name": "Founder · AI Agent",
+          "skills": "LLM application engineering, Multi-Agent orchestration, RAG, Tool Use, Agent evaluation, product management, enterprise sales"
+        },
+        "knowsAbout": [
+          "AI Agent",
+          "Large Language Models",
+          "Multi-Agent Orchestration",
+          "Retrieval-Augmented Generation",
+          "Tool Use / Function Calling",
+          "Agent Evaluation",
+          "Product Management",
+          "Enterprise Sales",
+          "Commercial Operations",
+          "Data-Driven Decision Making"
+        ],
+        "knowsLanguage": [
+          { "@type": "Language", "name": "Chinese", "alternateName": "zh-CN" },
+          { "@type": "Language", "name": "English", "alternateName": "en" }
+        ],
+        "sameAs": [
+          "https://github.com/shike"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://shike.github.io/#website",
+        "url": "https://shike.github.io/",
+        "name": "施可 · Shi Ke",
+        "description": "Personal homepage of Shi Ke — AI Agent Founder, Former Linhuiba COO.",
+        "inLanguage": ["zh-CN", "en"],
+        "publisher": { "@id": "https://shike.github.io/#person" }
+      },
+      {
+        "@type": "ProfilePage",
+        "@id": "https://shike.github.io/#profile",
+        "url": "https://shike.github.io/",
+        "name": "施可 (Shi Ke) — AI Agent Founder",
+        "isPartOf": { "@id": "https://shike.github.io/#website" },
+        "about": { "@id": "https://shike.github.io/#person" },
+        "mainEntity": { "@id": "https://shike.github.io/#person" },
+        "inLanguage": "zh-CN",
+        "dateModified": "2026-05-13"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://shike.github.io/#faq",
+        "isPartOf": { "@id": "https://shike.github.io/#website" },
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Who is Shi Ke (施可)?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Shi Ke (施可) is an AI Agent founder and former Linhuiba COO. He started as a software engineer at NCS (Singtel Group), founded Ball Chief Tribe with angel funding from Zihui Ventures in 2016, and went on to lead product and engineering teams at Tongcheng-Elong and Hellobike Hotel. As COO of Linhuiba (2022–2026), he delivered +80% revenue growth in 6 months and cut operating costs by 15%. In 2026, he founded Dropleap (水滴跃动), an enterprise AI implementation services company. He holds an MSc in Software Engineering from USTC."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is Dropleap (水滴跃动)?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Dropleap (水滴跃动) is an enterprise AI implementation services company founded by Shi Ke in 2026. It provides end-to-end services from AI strategy consulting and Agent solution design, through application engineering (LLM, Multi-Agent, RAG, Tool Use) to deployment operations. The focus is on embedding LLMs and AI Agents into real business workflows for measurable efficiency and revenue gains."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is Shi Ke's expertise?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Shi Ke's expertise spans AI Agent / LLM application engineering (multi-agent orchestration, tool use, RAG, agent evaluation and observability), product 0→1 development, KA enterprise sales (serving brands like Xiaomi EV, Xiaomi 3C, XPeng, Volkswagen, Yiheetang, KaWangKa, ASICS, Xiaotiancai, Yifeng Pharmacy), data-driven decision making, and commercial operations. He has 16+ years of cross-functional experience as engineer, product manager, and operator."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How can I contact Shi Ke?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Email: shike@dropleap.cn. GitHub: github.com/shike. WeChat Official Account: search 施可. Topics of interest include AI Agent / LLM applications, startup collaborations, product methodology, and enterprise account management."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What was Shi Ke's achievement at Linhuiba?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "As COO of Linhuiba (2022–2026), Shi Ke led company-wide strategy and execution: +80% revenue growth in 6 months, operating cost reduction of 15%, accounts receivable reduction of 60%. He also built Location from 0→1 — an AI-powered site intelligence platform that won the Alibaba Cloud AI Competition Silver Award, established a joint research center with Zhejiang University, and served brands including Xiaomi EV, Xiaomi 3C, Xiaotiancai, and Yiheetang."
+            }
+          }
+        ]
+      }
     ]
   }
   </script>
@@ -184,7 +281,7 @@
           <div class="timeline-item">
             <div class="timeline-marker"></div>
             <div class="timeline-content">
-              <span class="timeline-date">2026 - 至今</span>
+              <time class="timeline-date" datetime="2026">2026 - 至今</time>
               <h3 data-en="Founder">创始人</h3>
               <p class="timeline-company" data-en="Dropleap (水滴跃动) · Enterprise AI Implementation Services">水滴跃动 Dropleap · 企业级 AI 落地服务商</p>
               <p class="timeline-desc" data-en="Leading the team to build an enterprise AI implementation service system from 0 to 1. Around each client's business context, we provide end-to-end services from AI strategy consulting, agent solution design, application engineering (LLM, multi-agent, RAG, tool use) to deployment operations — helping enterprises embed LLMs and AI Agents into real business workflows for measurable efficiency and revenue gains.">带领团队从 0 到 1 搭建企业级 AI 落地服务体系。围绕客户业务场景，提供从 AI 战略咨询、Agent 方案设计、应用工程（LLM、Multi-Agent、RAG、Tool Use）到部署运营的端到端服务，帮助企业把大模型和 AI Agent 真正落进业务流程，产生可衡量的效率与收益提升。</p>
@@ -193,7 +290,7 @@
           <div class="timeline-item">
             <div class="timeline-marker"></div>
             <div class="timeline-content">
-              <span class="timeline-date">2022 - 2026</span>
+              <time class="timeline-date" datetime="2022/2026">2022 - 2026</time>
               <h3 data-en="COO">COO（首席运营官）</h3>
               <p class="timeline-company">邻汇吧</p>
               <p class="timeline-desc" data-en="As COO, responsible for company-wide strategy, execution, and daily operations. Built the management team, restructured the organization, and allocated talent/resources to achieve strategic goals. Also served as CMO, delivering +80% revenue growth in 6 months; and as CHRO, building the HR system. Built Location from 0 to 1 — an AI-powered site intelligence platform (joint research center with Zhejiang University, Alibaba Cloud AI Competition Silver Award), serving tier-1 clients including Xiaomi Auto, Xiaomi 3C, imoo, and Yihetang. Transformed the company's secondary business line into its primary growth engine. Operating costs down 15%, accounts receivable down 60%.">作为 COO，全面负责公司战略制定、战略承接和日常经营管理。组建经营管理团队，推动组织架构调整与人才资源配置，实现战略落地。兼任营销中心负责人，半年内实现 +80% 业绩增长；兼任 HRD，推动人力资源体系完善。从 0 到 1 打造 Location 数智化选址平台，联合浙江大学共建研究中心，获阿里云 AI 大赛银奖，服务小米汽车、小米 3C、小天才、益禾堂等头部品牌。主导公司第二业务线逆袭成为第一增长曲线。经营成本下降 15%，应收账款下降 60%。</p>
@@ -202,7 +299,7 @@
           <div class="timeline-item">
             <div class="timeline-marker"></div>
             <div class="timeline-content">
-              <span class="timeline-date">2021 - 2022</span>
+              <time class="timeline-date" datetime="2021/2022">2021 - 2022</time>
               <h3 data-en="Product Lead">产品负责人</h3>
               <p class="timeline-company" data-en="Hellobike Hotel · Hellobike (哈啰出行)">哈啰酒店 · 哈啰出行</p>
               <p class="timeline-desc" data-en="Core BU decision-maker. Defined business logic and execution roadmap for the product team. Designed B-side &amp; C-side product architecture for Hellobike Hotel, leading the team to ship and iterate. Built the user growth team, using the AIPL model to deconstruct growth paths, established the membership system, and drove online-offline user growth loops. Built the product operations team and established cross-functional workflows between product and engineering.">作为 BU 核心决策成员，梳理商业逻辑及业务实现路径，拆解为产品团队 RoadMap。规划并设计哈啰酒店 B 端 &amp; C 端产品框架，带领团队完成产品体系落地。搭建用户增长团队，基于 AIPL 模型拆解用户增长路径，搭建会员体系，从线上 &amp; 线下两个方向推动用户增长闭环。搭建产品运营团队，规划并落地产研对接流程，推动产研内部高效对接。</p>
@@ -211,7 +308,7 @@
           <div class="timeline-item">
             <div class="timeline-marker"></div>
             <div class="timeline-content">
-              <span class="timeline-date">2016 - 2021</span>
+              <time class="timeline-date" datetime="2016/2021">2016 - 2021</time>
               <h3 data-en="Product &amp; Tech Lead">产品负责人 &amp; 技术负责人</h3>
               <p class="timeline-company" data-en="Tongcheng Network · Tongcheng-Elong (HK:0780)">同程网络科技 · 同程艺龙（HK:0780）</p>
               <p class="timeline-desc" data-en="Product &amp; Tech Lead for the International Hotels division. Accountable for division business targets. Led the product team in continuous iteration of frontend experience and backend processes. Led the engineering team in efficient delivery.">同程艺龙国际酒店事业部产品负责人兼技术负责人。对事业部业绩完成情况负责，带领产品团队持续迭代优化前端体验和后端流程，带领技术团队完成高效交付。</p>
@@ -220,7 +317,7 @@
           <div class="timeline-item">
             <div class="timeline-marker"></div>
             <div class="timeline-content">
-              <span class="timeline-date">2015 - 2016</span>
+              <time class="timeline-date" datetime="2015/2016">2015 - 2016</time>
               <h3 data-en="Founder">创始人</h3>
               <p class="timeline-company" data-en="Tilaiququ Network · &quot;Ball Chief Tribe&quot;">苏州踢来踢去网络 ·「球长部落」</p>
               <p class="timeline-desc" data-en="As founder, handled all core work of building &quot;Ball Chief Tribe&quot; from 0 to 1. Raised 3M RMB angel funding from Zihui Ventures in January 2016 (post-money valuation: 20M RMB). Lived the full founder stack: product, tech, fundraising, team.">作为创始人，完成「球长部落」从 0 到 1 的全部核心工作。公司于 2016 年 1 月获得紫辉创投 300 万天使轮投资（估值 2000 万）。亲历产品、技术、融资、团队的全栈创业闭环。</p>
@@ -229,7 +326,7 @@
           <div class="timeline-item">
             <div class="timeline-marker"></div>
             <div class="timeline-content">
-              <span class="timeline-date">2009 - 2014</span>
+              <time class="timeline-date" datetime="2009/2014">2009 - 2014</time>
               <h3 data-en="Software Engineer → Tech Manager">软件工程师 → 技术经理</h3>
               <p class="timeline-company" data-en="NCS (Singtel Group) · Founder International">新电信息科技（NCS）· 方正国际软件</p>
               <p class="timeline-desc" data-en="At NCS: Grew from new grad to core developer, working on key modules and solving technical challenges. Multiple assignments in Singapore for project implementation and delivery. At Founder International: Served as Project Manager &amp; Tech Lead for enterprise projects including Yum! Brands' franchise development system, leading core codebase development.">NCS 期间：从应届毕业生成长为项目主力开发人员，参与核心模块开发、解决技术难题，多次出差新加坡负责项目实施和交付。方正国际期间：作为项目经理 &amp; 技术经理负责百胜餐饮加盟发展等大型企业级项目，主导核心代码编写。</p>
@@ -248,21 +345,21 @@
         </div>
         <div class="speaking-list">
           <div class="speaking-item">
-            <span class="speaking-date">2024.12</span>
+            <time class="speaking-date" datetime="2024-12">2024.12</time>
             <div class="speaking-content">
               <h3 data-en="Keynote: Slow-Pop-Up Experiential Marketing, Reshaping Offline Channel Value">主题演讲：慢闪店体验营销，重塑线下渠道价值</h3>
               <p data-en="Breakthrough · 2024 Daofa Annual Brand Summit | Shanghai">破界·2024刀法年度品效峰会 | 上海</p>
             </div>
           </div>
           <div class="speaking-item">
-            <span class="speaking-date">2024.12</span>
+            <time class="speaking-date" datetime="2024-12">2024.12</time>
             <div class="speaking-content">
               <h3 data-en="Keynote: Small &amp; Beautiful, Flexible &amp; Precise — How Slow-Pop-Ups Help Brands Break Through">主题演讲：小而美、灵而准——慢闪店如何助力品牌实现渠道突围</h3>
               <p data-en="5th TBI Outstanding Brand Innovation Festival | Shanghai">2024第五届TBI杰出品牌创新节 | 上海</p>
             </div>
           </div>
           <div class="speaking-item">
-            <span class="speaking-date">2024.12</span>
+            <time class="speaking-date" datetime="2024-12">2024.12</time>
             <div class="speaking-content">
               <h3 data-en="Moderator: Super Single Product vs. Brand Matrix">主持：超级单品与品牌矩阵如何选择</h3>
               <p data-en="5th TBI Innovation Festival Morning Debate | Shanghai">2024第五届TBI杰出品牌创新节 晨间闭门开杠 | 上海</p>
@@ -361,7 +458,7 @@
           <span class="section-label" data-en="CONTACT">联系</span>
           <h2 class="section-title" data-en="Get In Touch">联系方式</h2>
         </div>
-        <div class="contact-content">
+        <address class="contact-content">
           <p class="contact-desc" data-en="Feel free to reach out about AI Agents / LLM applications, startup collaborations, product methodology, or enterprise account management.">欢迎就 AI Agent / LLM 应用、创业合作、产品方法、大客户经营等话题与我交流。</p>
           <div class="contact-links">
             <a href="mailto:shike@dropleap.cn" class="contact-link">
@@ -377,7 +474,7 @@
               <span data-en="WeChat Official Account: Shi Ke">微信公众号：施可</span>
             </span>
           </div>
-        </div>
+        </address>
       </div>
     </section>
   </main>

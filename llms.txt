@@ -1,0 +1,61 @@
+# Shi Ke (施可)
+
+> AI Agent founder and former Linhuiba COO. Building Dropleap (水滴跃动), an enterprise AI implementation services company. 16+ years across engineering, product, enterprise sales, and operations.
+
+施可 (Shi Ke) is an entrepreneur with an MSc in Software Engineering from the University of Science and Technology of China (USTC). His non-linear path: software engineer → product lead → founder → COO → AI Agent founder.
+
+## Identity
+
+- **Name**: 施可 (Shi Ke)
+- **Role**: Founder, Dropleap (水滴跃动)
+- **Previous**: COO, Linhuiba (2022–2026)
+- **Education**: MSc in Software Engineering, USTC
+- **Email**: shike@dropleap.cn
+- **Website**: https://shike.github.io/
+- **GitHub**: https://github.com/shike
+
+## Current focus
+
+Building Dropleap (水滴跃动) — an enterprise AI implementation services company that helps clients embed LLMs and AI Agents into real business workflows. End-to-end services cover AI strategy consulting, agent solution design, application engineering (LLM, Multi-Agent, RAG, Tool Use), and deployment operations.
+
+## Career path
+
+- 2026–present — Founder, Dropleap (水滴跃动). Enterprise AI implementation services.
+- 2022–2026 — COO, Linhuiba. Delivered +80% revenue growth in 6 months as CMO; cut operating costs 15% and accounts receivable 60%. Built Location AI site intelligence platform from 0→1 (Alibaba Cloud AI Competition Silver Award; joint research center with Zhejiang University). Served Xiaomi EV, Xiaomi 3C, Xiaotiancai, Yiheetang, and others.
+- 2021–2022 — Product Lead, Hellobike Hotel (Hellobike / 哈啰出行). Core BU decision-maker. Built B-side & C-side product systems and membership growth loops.
+- 2016–2021 — Product & Tech Lead, Tongcheng-Elong (HK:0780), International Hotels division.
+- 2015–2016 — Founder, Ball Chief Tribe (苏州踢来踢去网络). Raised RMB 3M angel from Zihui Ventures (post-money valuation: RMB 20M).
+- 2009–2014 — Software Engineer → Tech Manager at NCS (Singtel Group) and Founder International. Worked on enterprise projects including Yum! Brands' franchise development system. Multiple Singapore implementation assignments.
+
+## Expertise
+
+- **AI Agent / LLM Engineering**: LLM application development, Multi-Agent orchestration, Tool Use & Function Calling, RAG, agent evaluation and observability
+- **Product 0→1**: User insight → PRD → MVP → scaled iteration, cross-functional engineering / product / business lens
+- **KA Enterprise Sales**: Full enterprise account lifecycle (insight, proposal, negotiation, long-term relationship management) with top brands
+- **Operations & Team Leadership**: Nationwide expansion, multi-city team building, organizational design, performance and incentive systems
+- **Data-Driven Decision Making**: Business metrics, footfall/ROI analysis, A/B experiments, methodology codification
+- **Public Speaking**: Industry keynotes, brand storytelling, technical writing
+
+## Brands served
+
+Xiaomi EV (小米汽车), Xiaomi 3C (小米 3C), XPeng (小鹏), Volkswagen (大众), ASICS (亚瑟士), Yiheetang (益禾堂), KaWangKa (卡旺卡), Xiaotiancai (小天才), imoo, Yifeng Pharmacy (益丰大药房), Jinuo Fu (基诺辅).
+
+## Public speaking (selected)
+
+- 2024.12 — Keynote: "Slow-Pop-Up Experiential Marketing, Reshaping Offline Channel Value" — Breakthrough · 2024 Daofa Annual Brand Summit, Shanghai
+- 2024.12 — Keynote: "Small & Beautiful, Flexible & Precise — How Slow-Pop-Ups Help Brands Break Through" — 5th TBI Outstanding Brand Innovation Festival, Shanghai
+- 2024.12 — Moderator: "Super Single Product vs. Brand Matrix" — 5th TBI Innovation Festival Morning Debate, Shanghai
+
+## Contact
+
+- **Email**: shike@dropleap.cn
+- **GitHub**: https://github.com/shike
+- **WeChat Official Account**: 施可 (search on WeChat)
+
+For collaborations: AI Agent / LLM application engineering, enterprise AI strategy, startup advisory, product methodology, enterprise account management.
+
+## Source
+
+This page: https://shike.github.io/
+Sitemap: https://shike.github.io/sitemap.xml
+Last updated: 2026-05-13
