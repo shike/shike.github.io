@@ -521,6 +521,105 @@ a:hover {
   gap: 8px;
 }
 
+/* Projects — full-width case card spanning both columns */
+.project-card--wide {
+  grid-column: 1 / -1;
+}
+
+/* Ventures — own products + authorized-agent credentials */
+.ventures-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.venture-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.venture-card:hover {
+  box-shadow: 0 12px 40px rgba(79,70,229,0.1);
+  transform: translateY(-6px);
+  border-color: rgba(79,70,229,0.15);
+}
+
+.venture-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.venture-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.venture-link {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.venture-card .project-desc {
+  margin-bottom: 16px;
+  flex: 1;
+}
+
+/* Authorized-agent credentials */
+.agency {
+  border-top: 1px dashed var(--border);
+  padding-top: 40px;
+}
+
+.agency-title {
+  text-align: center;
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+.agency-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.agency-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 10px;
+  padding: 24px;
+}
+
+.agency-card h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.agency-card p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
 /* Clients — Brand-color logo wall */
 .logo-wall {
   display: flex;
@@ -631,6 +730,29 @@ a.contact-link:hover {
 
 .contact-icon {
   font-size: 18px;
+}
+
+/* Contact — personal WeChat QR */
+.contact-qr {
+  margin: 40px auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.contact-qr img {
+  height: 180px;
+  width: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  display: block;
+}
+
+.contact-qr-caption {
+  font-size: 13px;
+  color: var(--text-secondary);
 }
 
 /* Tags */
@@ -744,6 +866,15 @@ a.contact-link:hover {
 
   .project-card.featured {
     grid-row: auto;
+  }
+
+  .project-card--wide {
+    grid-column: auto;
+  }
+
+  .ventures-grid,
+  .agency-grid {
+    grid-template-columns: 1fr;
   }
 
   /* Section padding mobile */

@@ -40,6 +40,21 @@ Building Dropleap (水滴跃动) — an enterprise AI implementation services co
 
 Xiaomi EV (小米汽车), Xiaomi 3C (小米 3C), XPeng (小鹏), Volkswagen (大众), ASICS (亚瑟士), Yiheetang (益禾堂), KaWangKa (卡旺卡), Xiaotiancai (小天才), imoo, Yifeng Pharmacy (益丰大药房), Jinuo Fu (基诺辅).
 
+## Ventures & products
+
+- **数商方略 (Shushang Fanglue)** — https://shushangfanglue.com/ — China's B2B software agent-matching platform. 1,000+ enterprise software listings with transparent reseller-policy comparison and real agent reviews; helps agents select products and vendors acquire customers.
+- **Minibus EV** — https://minibus-ev.com/ — Export brand of Leqi (Suzhou) IoT Technology. Cartoon-themed electric sightseeing vehicles for theme parks, resorts, and scenic destinations. 9 product series, ~200 partner scenic areas, 25+ cities deployed, zero safety accidents; vertically integrated factory since 2008.
+- **NihaoVisit** — https://www.nihaovisit.com/ — Practical China travel guides for foreign visitors; structured long-form content covering major China destinations and on-the-ground tips.
+
+## Authorized agent
+
+- **微盟星启 GEO (Weimob Xingqi GEO)** — https://www.xingqigeo.cn/ — Weimob Group's Generative Engine Optimization platform (released Jan 2026), lifting brand reach and acquisition across AI search engines (Doubao, Yuanbao, DeepSeek). Shi Ke is an authorized agent.
+- **呼波特 WhoBot** — https://www.whobot.com/ — AI phone-call digital employee from Beijing Whobot AI. LLM-powered 24/7 outbound calling replacing manual work for ~10x efficiency; 100+ clients incl. Kuafu, Dongchedi, Oppein. Shi Ke is an authorized agent.
+
+## Selected operations case
+
+- **World Cup pop-up stores · LIVAT (荟聚)** — Riding the 2026 FIFA World Cup, landed World Cup-themed pop-up stores across Changzhou, Wuxi, and Shanghai, with the Wuxi and Shanghai sites hosted inside LIVAT (荟聚) meeting-place centres. Stitched site selection, standardized slow-pop-up operations, and data-driven review into one loop, turning event traffic into measurable footfall and sales.
+
 ## Public speaking (selected)
 
 - 2024.12 — Keynote: "Slow-Pop-Up Experiential Marketing, Reshaping Offline Channel Value" — Breakthrough · 2024 Daofa Annual Brand Summit, Shanghai
@@ -51,6 +66,7 @@ Xiaomi EV (小米汽车), Xiaomi 3C (小米 3C), XPeng (小鹏), Volkswagen (大
 - **Email**: shike@dropleap.cn
 - **GitHub**: https://github.com/shike
 - **WeChat Official Account**: 施可 (search on WeChat)
+- **Personal WeChat**: scan the QR code on the contact section of the homepage
 
 For collaborations: AI Agent / LLM application engineering, enterprise AI strategy, startup advisory, product methodology, enterprise account management.
 
@@ -58,4 +74,4 @@ For collaborations: AI Agent / LLM application engineering, enterprise AI strate
 
 This page: https://shike.github.io/
 Sitemap: https://shike.github.io/sitemap.xml
-Last updated: 2026-05-13
+Last updated: 2026-06-25
