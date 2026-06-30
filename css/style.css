@@ -462,29 +462,7 @@ a:hover {
   color: var(--text-secondary);
 }
 
-/* Projects */
-.projects-grid {
-  display: grid;
-  grid-template-columns: 1.6fr 1fr;
-  grid-template-rows: auto auto;
-  gap: 24px;
-}
-
-.project-card {
-  position: relative;
-}
-
-.project-card.featured {
-  grid-row: span 2;
-  background: linear-gradient(160deg, var(--bg-primary) 0%, #faf9ff 100%);
-  border-color: rgba(79,70,229,0.18);
-  box-shadow: 0 4px 24px rgba(79,70,229,0.06);
-}
-
-.project-card.featured:hover {
-  box-shadow: 0 16px 48px rgba(79,70,229,0.16);
-}
-
+/* Shared card bits — badge / desc / tags (used by ventures main card) */
 .project-badge {
   display: inline-block;
   font-size: 11px;
@@ -498,16 +476,6 @@ a:hover {
   margin-bottom: 14px;
 }
 
-.project-card h3 {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 14px;
-}
-
-.project-card.featured h3 {
-  font-size: 22px;
-}
-
 .project-desc {
   font-size: 14px;
   color: var(--text-secondary);
@@ -519,11 +487,6 @@ a:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-}
-
-/* Projects — full-width case card spanning both columns */
-.project-card--wide {
-  grid-column: 1 / -1;
 }
 
 /* Ventures — own products + authorized-agent credentials */
@@ -575,49 +538,117 @@ a:hover {
   flex: 1;
 }
 
-/* Authorized-agent credentials */
-.agency {
-  border-top: 1px dashed var(--border);
-  padding-top: 40px;
-}
-
-.agency-title {
-  text-align: center;
-  font-size: 13px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--text-secondary);
+/* Ventures — main engine card (full width, emphasized) */
+.venture-card--main {
+  background: linear-gradient(160deg, var(--bg-primary) 0%, #faf9ff 100%);
+  border-color: rgba(79,70,229,0.18);
+  box-shadow: 0 4px 24px rgba(79,70,229,0.06);
   margin-bottom: 24px;
-  font-weight: 600;
 }
 
-.agency-grid {
+.venture-card--main:hover {
+  box-shadow: 0 16px 48px rgba(79,70,229,0.16);
+}
+
+.venture-card--main h3 {
+  font-size: 22px;
+}
+
+/* Ventures — supporting line cards (sub-product list) */
+.venture-line-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.venture-sub-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+}
+
+.venture-sub {
+  padding-bottom: 16px;
+  border-bottom: 1px dashed var(--border);
+}
+
+.venture-sub:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.venture-sub-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.venture-sub-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.venture-sub-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Track record (inside Experience) */
+.track-record {
+  margin-top: 64px;
+  padding-top: 48px;
+  border-top: 1px solid var(--border);
+}
+
+.track-title {
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.track-note {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.track-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
-  max-width: 760px;
-  margin: 0 auto;
+  margin-top: 40px;
 }
 
-.agency-card {
+.track-card {
   background: var(--bg-primary);
   border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
-  border-radius: 10px;
-  padding: 24px;
+  border-radius: 12px;
+  padding: 28px;
 }
 
-.agency-card h4 {
-  font-size: 16px;
+.track-card h4 {
+  font-size: 17px;
   font-weight: 700;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
-.agency-card p {
+.track-card p {
   font-size: 14px;
   color: var(--text-secondary);
   line-height: 1.7;
-  margin-bottom: 12px;
 }
 
 /* Clients — Brand-color logo wall */
@@ -860,20 +891,8 @@ a.contact-link:hover {
 
   /* Grid mobile */
   .skills-grid,
-  .projects-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .project-card.featured {
-    grid-row: auto;
-  }
-
-  .project-card--wide {
-    grid-column: auto;
-  }
-
   .ventures-grid,
-  .agency-grid {
+  .track-grid {
     grid-template-columns: 1fr;
   }
 
@@ -912,4 +931,102 @@ a.contact-link:hover {
     flex-direction: column;
     align-items: center;
   }
+}
+
+/* QR modal — agency product inquiry */
+.qr-modal[hidden] {
+  display: none;
+}
+
+.qr-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.qr-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+}
+
+.qr-modal-card {
+  position: relative;
+  background: var(--bg-primary);
+  border-radius: 16px;
+  padding: 40px 32px 28px;
+  max-width: 320px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 24px 64px rgba(15, 23, 42, 0.28);
+  animation: qr-pop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes qr-pop {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+.qr-modal-close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--text-muted);
+  transition: background 0.2s, color 0.2s;
+}
+
+.qr-modal-close:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.qr-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+.qr-modal-img {
+  width: 100%;
+  max-width: 240px;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+  margin: 0 auto;
+}
+
+.qr-modal-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 16px;
+  line-height: 1.6;
+}
+
+/* QR-trigger button styled like a link */
+button.venture-link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  color: var(--accent);
+  padding: 0;
+}
+
+button.venture-link:hover {
+  color: var(--accent-hover);
 }

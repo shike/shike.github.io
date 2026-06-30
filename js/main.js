@@ -114,3 +114,43 @@ if (langSwitch) {
 
 const saved = localStorage.getItem(STORAGE_KEY);
 if (saved === 'en') setLanguage('en');
+
+// QR modal — agency product inquiry (星启 GEO / 呼波特 WhoBot)
+const qrModal = document.getElementById('qrModal');
+const qrTitle = document.getElementById('qrModalTitle');
+const qrDesc = document.getElementById('qrModalDesc');
+let qrLastFocus = null;
+
+function openQrModal(title, desc) {
+  if (!qrModal) return;
+  qrLastFocus = document.activeElement;
+  if (title && qrTitle) qrTitle.textContent = title;
+  if (desc && qrDesc) qrDesc.textContent = desc;
+  qrModal.hidden = false;
+  document.body.style.overflow = 'hidden';
+  const closeBtn = qrModal.querySelector('.qr-modal-close');
+  if (closeBtn) closeBtn.focus();
+}
+
+function closeQrModal() {
+  if (!qrModal || qrModal.hidden) return;
+  qrModal.hidden = true;
+  document.body.style.overflow = '';
+  if (qrLastFocus && typeof qrLastFocus.focus === 'function') qrLastFocus.focus();
+}
+
+document.querySelectorAll('[data-qr-trigger]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    openQrModal(btn.getAttribute('data-qr-title'), btn.getAttribute('data-qr-desc'));
+  });
+});
+
+if (qrModal) {
+  qrModal.querySelectorAll('[data-qr-close]').forEach(el => {
+    el.addEventListener('click', closeQrModal);
+  });
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && qrModal && !qrModal.hidden) closeQrModal();
+});
