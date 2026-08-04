@@ -316,16 +316,20 @@ a:hover {
 
 /* About */
 .about-content {
-  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
 }
 
 .about-content p {
   font-size: 16px;
   color: var(--text-secondary);
-  margin-bottom: 16px;
-  max-width: 720px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-bottom: 20px;
+  line-height: 1.9;
+}
+
+.about-content p:last-child {
+  margin-bottom: 0;
 }
 
 /* Skills */
@@ -336,17 +340,25 @@ a:hover {
 }
 
 .skill-card,
-.project-card {
+.project-card,
+.venture-card,
+.book-card {
   background: var(--bg-primary);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 32px;
   transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
   box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
+.skill-card,
+.project-card {
+  padding: 32px;
+}
+
 .skill-card:hover,
-.project-card:hover {
+.project-card:hover,
+.venture-card:hover,
+.book-card:hover {
   box-shadow: 0 12px 40px rgba(79,70,229,0.1);
   transform: translateY(-6px);
   border-color: rgba(79,70,229,0.15);
@@ -497,21 +509,11 @@ a:hover {
   margin-bottom: 48px;
 }
 
-.venture-card {
-  background: var(--bg-primary);
-  border: 1px solid var(--border);
-  border-radius: 12px;
+.venture-card,
+.book-card {
   padding: 28px;
   display: flex;
   flex-direction: column;
-  transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-}
-
-.venture-card:hover {
-  box-shadow: 0 12px 40px rgba(79,70,229,0.1);
-  transform: translateY(-6px);
-  border-color: rgba(79,70,229,0.15);
 }
 
 .venture-head {
@@ -603,6 +605,53 @@ a:hover {
   font-size: 13px;
   color: var(--text-secondary);
   line-height: 1.6;
+}
+
+/* Books */
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.book-cover-frame {
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  padding: 16px;
+  overflow: hidden;
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+}
+
+.book-cover {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.book-card h3 {
+  font-size: 20px;
+  line-height: 1.45;
+  margin-bottom: 12px;
+}
+
+.book-card > p {
+  flex: 1;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+
+.book-link {
+  align-self: flex-start;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 /* Track record (inside Experience) */
@@ -824,6 +873,8 @@ a.contact-link:hover {
 
   .skill-card:hover,
   .project-card:hover,
+  .venture-card:hover,
+  .book-card:hover,
   .client-tag:hover,
   a.contact-link:hover {
     transform: none;
@@ -892,8 +943,13 @@ a.contact-link:hover {
   /* Grid mobile */
   .skills-grid,
   .ventures-grid,
+  .books-grid,
   .track-grid {
     grid-template-columns: 1fr;
+  }
+
+  .book-cover-frame {
+    height: 240px;
   }
 
   /* Section padding mobile */
