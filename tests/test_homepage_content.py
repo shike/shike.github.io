@@ -181,6 +181,20 @@ class BooksTests(unittest.TestCase):
             with self.subTest(selector=selector):
                 self.assertIn(selector, CSS)
 
+    def test_cover_stage_is_shared_portrait_frame(self):
+        frame = re.search(r"\.book-cover-frame\s*\{(.*?)\}", CSS, re.DOTALL)
+        image = re.search(r"\.book-cover\s*\{(.*?)\}", CSS, re.DOTALL)
+        self.assertIsNotNone(frame)
+        self.assertIsNotNone(image)
+        self.assertIn("width: min(100%, 240px);", frame.group(1))
+        self.assertIn("aspect-ratio: 3 / 4;", frame.group(1))
+        self.assertIn("margin: 0 auto 24px;", frame.group(1))
+        self.assertIn("max-width: 100%;", image.group(1))
+        self.assertIn("max-height: 100%;", image.group(1))
+        self.assertIn("object-fit: contain;", image.group(1))
+        self.assertNotRegex(image.group(1), r"(?m)^\s*height:\s*100%;")
+        self.assertIn("width: min(100%, 220px);", CSS)
+
 
 class MachineReadableTests(unittest.TestCase):
     def json_ld_graph(self):
