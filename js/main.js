@@ -5,12 +5,12 @@ const langSwitch = document.getElementById('langSwitch');
 
 const META = {
   zh: {
-    title: '施可 - AI Agent 创业者 / 前邻汇吧 COO',
-    description: '施可 - AI Agent 创业者 / 前邻汇吧 COO。写过代码、做过产品、经营过大客户、带过商业团队。现在专注用 AI Agent 把这些一线 know-how 装成产品。'
+    title: '施可｜连续创业者、Dropleap 创始人、企业级 AI 实践者',
+    description: '施可，水滴跃动 Dropleap 创始人、连续创业者、中科大软件工程硕士。16 年横跨软件工程、互联网产品与企业经营，现聚焦企业级 AI Agent、GEO 与应用工程。'
   },
   en: {
-    title: 'Shi Ke — AI Agent Founder / Former Linhuiba COO',
-    description: 'AI Agent Founder · Former Linhuiba COO. I wrote code, shipped products, managed enterprise accounts, and led commercial teams. Now I build AI Agents that turn frontline know-how into products.'
+    title: 'Shi Ke — Serial Entrepreneur, Founder of Dropleap, Enterprise AI Practitioner',
+    description: 'Shi Ke is a serial entrepreneur, founder of Dropleap, and an enterprise AI practitioner with 16 years across software engineering, internet products, and business operations. He now focuses on enterprise AI Agents, GEO, and application engineering.'
   }
 };
 
