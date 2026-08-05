@@ -107,6 +107,36 @@ class PersonalProfileTests(unittest.TestCase):
 
 
 class LogoWallTests(unittest.TestCase):
+    def test_logo_wall_groups(self):
+        expected_brands = [
+            "assets/logos/xiaomi.svg",
+            "assets/logos/xpeng.svg",
+            "assets/logos/volkswagen.svg",
+            "assets/logos/dongfeng-nissan.png",
+            "assets/logos/saic.png",
+            "assets/logos/yhetea.png",
+            "assets/logos/kawangke.png",
+            "assets/logos/kuafu-zhachua.png",
+            "assets/logos/zhengxin-jipai.png",
+            "assets/logos/sanjin-tangbao.png",
+            "assets/logos/ginoble.png",
+            "assets/logos/xiaotiancai.svg",
+            "assets/logos/hao-xianglai.png",
+            "assets/logos/aldi.png",
+        ]
+        for path in expected_brands:
+            with self.subTest(asset=path):
+                self.assertIn(f'src="{path}"', INDEX)
+                self.assertTrue((ROOT / path).is_file(), f"missing {path}")
+                self.assertLess((ROOT / path).stat().st_size, 500_000)
+        self.assertIn("万益蓝 WITSBB", INDEX)
+        self.assertIn("小象超市", INDEX)
+        self.assertRegex(INDEX, r'data-en="ASICS"[^<]*>亚瑟士</div>')
+        self.assertRegex(INDEX, r'data-en="Yifeng Pharmacy"[^<]*>益丰大药房</div>')
+        self.assertNotIn('>医药</h4>', INDEX)
+        self.assertNotIn("--brand-color:#D4A853", INDEX)
+        self.assertNotIn("--brand-color:#E5302C", INDEX)
+
     def test_logo_wall_uses_verified_assets(self):
         expected = [
             "assets/logos/xiaomi.svg",
@@ -114,10 +144,6 @@ class LogoWallTests(unittest.TestCase):
             "assets/logos/volkswagen.svg",
             "assets/logos/yhetea.png",
             "assets/logos/kawangke.png",
-            "assets/logos/happy-cow.png",
-            "assets/logos/qianxiaojian.png",
-            "assets/logos/liaojiboyazi.png",
-            "assets/logos/chuanqimala.png",
             "assets/logos/ginoble.png",
             "assets/logos/xiaotiancai.svg",
         ]
@@ -358,6 +384,34 @@ class BrandAssetsTests(unittest.TestCase):
                 path = ROOT / "assets" / "logos" / f"{name}.svg"
                 self.assertTrue(path.is_file(), f"missing {path}")
                 self.assertIn("<svg", path.read_text(encoding="utf-8"))
+
+    def test_logo_wall_groups(self):
+        expected_brands = [
+            "assets/logos/xiaomi.svg",
+            "assets/logos/xpeng.svg",
+            "assets/logos/volkswagen.svg",
+            "assets/logos/dongfeng-nissan.png",
+            "assets/logos/saic.png",
+            "assets/logos/yhetea.png",
+            "assets/logos/kawangke.png",
+            "assets/logos/kuafu-zhachua.png",
+            "assets/logos/zhengxin-jipai.png",
+            "assets/logos/sanjin-tangbao.png",
+            "assets/logos/xiaomi.svg",
+            "assets/logos/ginoble.png",
+            "assets/logos/dongfeng-nissan.png",
+            "assets/logos/saic.png",
+            "assets/logos/xiaotiancai.svg",
+            "assets/logos/hao-xianglai.png",
+            "assets/logos/aldi.png",
+        ]
+        for path in expected_brands:
+            with self.subTest(asset=path):
+                self.assertIn(f'src="{path}"', INDEX)
+        self.assertIn("万益蓝 WITSBB", INDEX)
+        self.assertIn("小象超市", INDEX)
+        self.assertNotIn("医药", INDEX)
+
 
     def test_venture_sub_brand_uses_local_icon(self):
         for path, zh in [
