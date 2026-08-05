@@ -1,6 +1,7 @@
 from pathlib import Path
 import json
 import re
+import struct
 import unittest
 import xml.etree.ElementTree as ET
 
@@ -231,3 +232,82 @@ class MachineReadableTests(unittest.TestCase):
         for book in BOOKS:
             self.assertIn(book["url"], LLMS)
         self.assertIn("Last updated: 2026-08-04", LLMS)
+
+
+class BrandAssetsTests(unittest.TestCase):
+    def test_brand_assets_are_local(self):
+        remote = [
+            "https://www.xingqigeo.cn/",
+            "https://whobot.com/",
+            "https://nihaovisit.com/",
+            "https://lioramoon.com/",
+            "allstarpartner.com",
+        ]
+        for token in remote:
+            with self.subTest(token=token):
+                self.assertNotIn(f'src="https://{token}', INDEX)
+                self.assertNotIn(f"src='https://{token}", INDEX)
+
+    def test_each_brand_asset_file_matches_spec(self):
+        expectations = [
+            ("xingqi-geo", 64, 64, "png"),
+            ("liora-moon", 512, 512, "png"),
+            ("all-star-partner", 300, 300, "png"),
+        ]
+        for name, width, height, ext in expectations:
+            with self.subTest(brand=name):
+                path = ROOT / "assets" / "logos" / f"{name}.{ext}"
+                self.assertTrue(path.is_file(), f"missing {path}")
+                with path.open("rb") as stream:
+                    self.assertEqual(stream.read(8), b"\x89PNG\r\n\x1a\n")
+                    stream.seek(16)
+                    self.assertEqual(struct.unpack(">II", stream.read(8)), (width, height))
+        for name in ("whobot", "nihaovisit"):
+            with self.subTest(brand=name):
+                path = ROOT / "assets" / "logos" / f"{name}.svg"
+                self.assertTrue(path.is_file(), f"missing {path}")
+                self.assertIn("<svg", path.read_text(encoding="utf-8"))
+
+    def test_venture_sub_brand_uses_local_icon(self):
+        for path, zh in [
+            ("assets/logos/xingqi-geo.png", "微盟星启 GEO"),
+            ("assets/logos/whobot.svg", "呼波特 WhoBot"),
+            ("assets/logos/nihaovisit.svg", "NihaoVisit"),
+            ("assets/logos/liora-moon.png", "Liora Moon"),
+            ("assets/logos/all-star-partner.png", "聚星动力 FanTown"),
+        ]:
+            with self.subTest(brand=zh):
+                pattern = (
+                    r'<span class="venture-sub-brand">'
+                    r'\s*<span class="venture-sub-logo" aria-hidden="true">'
+                    r'\s*<img src="' + re.escape(path) + r'"'
+                )
+                self.assertRegex(INDEX, pattern)
+                self.assertIn(zh, INDEX)
+
+    def test_venture_sub_brand_styles(self):
+        self.assertIn(".venture-sub-brand {", CSS)
+        self.assertIn(".venture-sub-logo {", CSS)
+        self.assertIn("width: 32px;", CSS)
+        self.assertIn("height: 32px;", CSS)
+        self.assertRegex(
+            CSS,
+            r"@media \(max-width:\s*768px\)\s*\{[\s\S]*?\.venture-sub-logo\s*\{[^}]*width:\s*28px;",
+        )
+
+    def test_balanced_compact_density_values(self):
+        self.assertIn("--section-padding: 68px;", CSS)
+        self.assertRegex(CSS, r"\.hero\s*\{[^}]*padding-top:\s*120px;\s*padding-bottom:\s*72px;")
+        self.assertIn("margin-bottom: 32px;", CSS)
+        self.assertIn("line-height: 1.7;", CSS)
+        self.assertRegex(
+            CSS,
+            r"\.skills-grid,\s*\.ventures-grid,\s*\.books-grid,\s*\.track-grid\s*\{[^}]*gap:\s*20px;",
+        )
+        self.assertIn("margin: 0 auto 28px;", CSS)
+        self.assertRegex(CSS, r"\.about-content p\s*\{[^}]*line-height:\s*1\.75;")
+        self.assertRegex(CSS, r"\.timeline-item\s*\{[^}]*padding-bottom:\s*28px;")
+        self.assertRegex(CSS, r"\.track-record\s*\{[^}]*margin-top:\s*40px;\s*padding-top:\s*32px;")
+        self.assertRegex(CSS, r"\.logo-wall\s*\{[^}]*gap:\s*24px;")
+        self.assertRegex(CSS, r"\.speaking-item\s*\{[^}]*padding:\s*18px 0;")
+        self.assertRegex(CSS, r"\.contact-qr\s*\{[^}]*margin:\s*28px auto 0;")

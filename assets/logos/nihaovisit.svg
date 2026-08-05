@@ -1,0 +1,30 @@
+<!--
+  nihaovisit icon — N + travel-path + destination-dot.
+
+  Concept (matches BRAND.md §5.1 / Logo.tsx):
+    - Bold "N" = the brand mark
+    - Small amber dot (origin) → arc → larger amber dot (destination)
+    - Mirrors the wordmark structure: type + path-dot at the destination
+    - "The dot is the destination. You're almost there."
+
+  Use: PWA / icon link / apple-touch fallback. For PWA maskable contexts
+  see icon-maskable.svg, which keeps all content within the safe zone.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="nihaovisit">
+  <!-- Background: navy surface, rounded square (rx ~20% — banking-adjacent feel) -->
+  <rect width="100" height="100" rx="20" fill="#0F2A4A"/>
+
+  <!-- Travel path: origin dot → arc → destination dot -->
+  <circle cx="22" cy="68" r="3.5" fill="#B45309"/>
+  <path d="M 22 68 Q 50 8 78 26" fill="none" stroke="#B45309" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="78" cy="26" r="7" fill="#B45309"/>
+
+  <!-- White N — pure shapes (left bar + right bar + diagonal) for pixel-perfect
+       rendering across browsers, OS home screens, and raster generators.
+       Geometry centered in viewBox 100×100; cap-height ~58, stroke width ~14. -->
+  <g fill="#FFFFFF">
+    <rect x="22" y="20" width="14" height="60"/>
+    <rect x="64" y="20" width="14" height="60"/>
+    <polygon points="22,20 36,20 78,78 64,78"/>
+  </g>
+</svg>
