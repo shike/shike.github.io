@@ -54,7 +54,7 @@ Xiaomi EV (小米汽车), Xiaomi 3C (小米 3C), XPeng (小鹏), Volkswagen (大
 ## Books
 
 - **AI Coding: Everyone Is a Programmer (《AI Coding：人人都是程序员》)** — https://github.com/shike/ai_coding_book — A practical guide for non-technical builders who want to ship real, payable, and maintainable products with AI.
-- **FDE: The AI Race Isn't Won on Models (《FDE：AI 竞赛不在于模型》)** — https://github.com/shike/FDE-AI-race-isn-t-won-on-models — A field guide to taking AI projects from proof of concept through engineering delivery, deployment, and sustained operations.
+- **FDE: Winning and Losing in AI Isn't About the Model (《FDE：AI 的胜负不在于模型》)** — https://github.com/shike/FDE-AI-race-isn-t-won-on-models — A field guide to taking AI projects from proof of concept through engineering delivery, deployment, and sustained operations.
 
 ## Selected operations case
 
