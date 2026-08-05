@@ -133,6 +133,18 @@ class LogoWallTests(unittest.TestCase):
                 ):
                     self.assertTrue((ROOT / path).is_file(), f"missing {path}")
                     self.assertLess((ROOT / path).stat().st_size, 50_000)
+
+    def test_logo_card_styles_are_uniform(self):
+        self.assertIn(".logo-card {", CSS)
+        self.assertIn("height: 64px;", CSS)
+        self.assertIn("display: flex;", CSS)
+        self.assertIn("align-items: center;", CSS)
+        self.assertIn("justify-content: center;", CSS)
+        self.assertIn(".logo-card.has-logo img {", CSS)
+        self.assertIn("max-width: 80%;", CSS)
+        self.assertIn("max-height: 40px;", CSS)
+        self.assertIn("object-fit: contain;", CSS)
+        self.assertRegex(CSS, r"@media \(max-width:\s*768px\)\s*\{[\s\S]*?\.logo-card\s*\{[^}]*height:\s*56px;")
         self.assertIn(
             "title: '施可｜连续创业者、Dropleap 创始人、企业级 AI 实践者'",
             JS,
@@ -285,22 +297,30 @@ class SpeakingTests(unittest.TestCase):
         self.assertIn("刀法", self.index)
         self.assertIn("TBI", self.index)
         self.assertIn("2024", self.index)
-        self.assertIn("2024.12", self.index)
-        self.assertIn("Keynote: Reinventing Offline Channels", self.index)
-        self.assertIn("Small Footprint, High Conversion", self.index)
-        self.assertIn("Panel Moderator", self.index)
-        self.assertNotIn("Small &amp; Beautiful", self.index)
-        self.assertNotIn("& Beautiful", self.index)
-
+        self.assertIn("2024-12-05", self.index)
+        self.assertIn("2024-12-26", self.index)
+        self.assertIn("Small, Flexible, Measurable", self.llms)
+        self.assertIn("Small, Beautiful, Agile, Precise", self.index)
+        self.assertIn("Panel Moderator: Super Single Product vs. Brand Matrix", self.index)
+        self.assertIn("Slow-Pop-Up Experiential Marketing", self.index)
+        self.assertIn("Channel Bottlenecks", self.index)
+        self.assertIn("How Slow-Pop-Ups Help Brands", self.index)
+        self.assertIn("ChengDao (成于渠道) Channel", self.index)
+        self.assertIn("Closed-Door Morning Panel", self.index)
     def test_speaking_items_use_approved_summary_in_llms(self):
         self.assertNotIn("Slow-Pop-Up Experiential Marketing, Reshaping Offline Channel Value", self.llms)
         self.assertNotIn("Small & Beautiful, Flexible & Precise", self.llms)
-        self.assertNotIn("Super Single Product vs. Brand Matrix", self.llms)
+        self.assertIn("2024-12-05", self.llms)
+        self.assertIn("2024-12-26", self.llms)
+        self.assertIn("Daofa (刀法) 2024 Annual Brand Performance Summit, Shanghai", self.llms)
+        self.assertIn("5th TBI Outstanding Brand Innovation Festival", self.llms)
+        self.assertIn("Small, Flexible, Measurable", self.llms)
+        self.assertIn("Small, Beautiful, Agile, Precise", self.llms)
+        self.assertIn("Super Single Product vs. Brand Matrix", self.llms)
+        self.assertIn("ChengDao (成于渠道)", self.llms)
+        self.assertIn("closed-door morning panel", self.llms)
         self.assertIn("刀法", self.llms)
         self.assertIn("TBI", self.llms)
-        self.assertIn("Reinventing Offline Channels", self.llms)
-        self.assertIn("Small Footprint, High Conversion", self.llms)
-        self.assertIn("Panel Moderator", self.llms)
 
 
 class BrandAssetsTests(unittest.TestCase):
