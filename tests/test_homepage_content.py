@@ -103,6 +103,45 @@ class PersonalProfileTests(unittest.TestCase):
             JS,
         )
         self.assertIn("企业级 AI Agent、GEO 与应用工程", JS)
+        self.assertIn('data-en="Linhuiba">邻汇吧</p>', INDEX)
+
+
+class LogoWallTests(unittest.TestCase):
+    def test_logo_wall_uses_verified_assets(self):
+        expected = [
+            "assets/logos/xiaomi.svg",
+            "assets/logos/xpeng.svg",
+            "assets/logos/volkswagen.svg",
+            "assets/logos/yhetea.png",
+            "assets/logos/kawangke.png",
+            "assets/logos/happy-cow.png",
+            "assets/logos/qianxiaojian.png",
+            "assets/logos/liaojiboyazi.png",
+            "assets/logos/chuanqimala.png",
+            "assets/logos/ginoble.png",
+            "assets/logos/xiaotiancai.svg",
+        ]
+        for path in expected:
+            with self.subTest(asset=path):
+                self.assertIn(f'src="{path}"', INDEX)
+                if path.endswith((".png", ".svg", ".jpg")) and path not in (
+                    "assets/logos/xiaomi.svg",
+                    "assets/logos/xpeng.svg",
+                    "assets/logos/volkswagen.svg",
+                    "assets/logos/xiaotiancai.svg",
+                    "assets/logos/ginoble.png",
+                ):
+                    self.assertTrue((ROOT / path).is_file(), f"missing {path}")
+                    self.assertLess((ROOT / path).stat().st_size, 50_000)
+        self.assertIn(
+            "title: '施可｜连续创业者、Dropleap 创始人、企业级 AI 实践者'",
+            JS,
+        )
+        self.assertIn(
+            "title: 'Shi Ke — Serial Entrepreneur, Founder of Dropleap, Enterprise AI Practitioner'",
+            JS,
+        )
+        self.assertIn("企业级 AI Agent、GEO 与应用工程", JS)
         social_alt = "Shi Ke — Serial Entrepreneur, Founder of Dropleap, Enterprise AI Practitioner"
         self.assertIn(f'<meta property="og:image:alt" content="{social_alt}">', INDEX)
         self.assertIn(f'<meta name="twitter:image:alt" content="{social_alt}">', INDEX)
@@ -232,6 +271,36 @@ class MachineReadableTests(unittest.TestCase):
         for book in BOOKS:
             self.assertIn(book["url"], LLMS)
         self.assertIn("Last updated: 2026-08-04", LLMS)
+
+
+class SpeakingTests(unittest.TestCase):
+    def setUp(self):
+        self.index = read("index.html")
+        self.llms = read("llms.txt")
+
+    def test_speaking_items_use_approved_copy(self):
+        self.assertNotIn("破界·2024刀法年度品效峰会", self.index)
+        self.assertNotIn("Small & Beautiful, Flexible & Precise", self.index)
+        self.assertNotIn("晨间闭门开杠", self.index)
+        self.assertIn("刀法", self.index)
+        self.assertIn("TBI", self.index)
+        self.assertIn("2024", self.index)
+        self.assertIn("2024.12", self.index)
+        self.assertIn("Keynote: Reinventing Offline Channels", self.index)
+        self.assertIn("Small Footprint, High Conversion", self.index)
+        self.assertIn("Panel Moderator", self.index)
+        self.assertNotIn("Small &amp; Beautiful", self.index)
+        self.assertNotIn("& Beautiful", self.index)
+
+    def test_speaking_items_use_approved_summary_in_llms(self):
+        self.assertNotIn("Slow-Pop-Up Experiential Marketing, Reshaping Offline Channel Value", self.llms)
+        self.assertNotIn("Small & Beautiful, Flexible & Precise", self.llms)
+        self.assertNotIn("Super Single Product vs. Brand Matrix", self.llms)
+        self.assertIn("刀法", self.llms)
+        self.assertIn("TBI", self.llms)
+        self.assertIn("Reinventing Offline Channels", self.llms)
+        self.assertIn("Small Footprint, High Conversion", self.llms)
+        self.assertIn("Panel Moderator", self.llms)
 
 
 class BrandAssetsTests(unittest.TestCase):
