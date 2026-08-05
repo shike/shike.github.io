@@ -293,7 +293,7 @@ class SpeakingTests(unittest.TestCase):
     def test_speaking_items_use_approved_copy(self):
         self.assertNotIn("破界·2024刀法年度品效峰会", self.index)
         self.assertNotIn("Small & Beautiful, Flexible & Precise", self.index)
-        self.assertNotIn("晨间闭门开杠", self.index)
+        self.assertNotIn("晨间闭场开杠", self.index)
         self.assertNotIn("2024-12-05", self.index)
         self.assertNotIn("2024-12-26", self.index)
         self.assertNotIn('datetime="2024-12', self.index)
