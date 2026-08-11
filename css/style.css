@@ -439,6 +439,28 @@ a:hover {
 }
 
 /* Speaking */
+.speaking-hero {
+  margin: 0 0 36px;
+  max-width: 920px;
+}
+
+.speaking-hero img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.08);
+}
+
+.speaking-hero figcaption {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+  letter-spacing: 0.2px;
+}
+
 .speaking-list {
   max-width: 720px;
 }
