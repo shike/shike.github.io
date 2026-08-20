@@ -665,6 +665,14 @@ a:hover {
   }
 }
 
+/* Agent Skills on WorkBuddy: 2 cards only — center the row */
+#agent-skills .books-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 920px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .book-cover-frame {
   width: min(100%, 240px);
   aspect-ratio: 3 / 4;
