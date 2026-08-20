@@ -53,8 +53,9 @@ Xiaomi EV (小米汽车), Xiaomi 3C (小米 3C), XPeng (小鹏), Volkswagen (大
 
 ## Books
 
-- **AI Coding: Everyone Is a Programmer (《AI Coding：人人都是程序员》)** — https://github.com/shike/ai_coding_book — A practical guide for non-technical builders who want to ship real, payable, and maintainable products with AI.
-- **FDE: Winning and Losing in AI Isn't About the Model (《FDE：AI 的胜负不在于模型》)** — https://github.com/shike/FDE-AI-race-isn-t-won-on-models — A field guide to taking AI projects from proof of concept through engineering delivery, deployment, and sustained operations.
+- **AI Coding: Everyone Is a Programmer (《AI Coding：人人都是程序员》)** — https://shike.gitbook.io/ai-coding/ — A practical guide for non-technical builders who want to ship real, payable, and maintainable products with AI.
+- **FDE: Winning and Losing in AI Isn't About the Model (《FDE：AI 的胜负不在于模型》)** — https://shike.gitbook.io/fde-1 — A field guide to taking AI projects from proof of concept through engineering delivery, deployment, and sustained operations.
+- **WorkBuddy: An Enterprise AI Implementation Trilogy (《WorkBuddy:企业 AI 落地三部曲》)** — https://shike.gitbook.io/workbuddy/ — A 3-volume, 24-chapter field workbook for taking enterprise AI from use-case discovery through engineering delivery to deployment operations. Designed as a training and consulting deliverable.
 
 ## Selected operations case
 
@@ -79,4 +80,4 @@ For collaborations: AI Agent / LLM application engineering, enterprise AI strate
 
 This page: https://shike.github.io/
 Sitemap: https://shike.github.io/sitemap.xml
-Last updated: 2026-08-04
+Last updated: 2026-08-20
