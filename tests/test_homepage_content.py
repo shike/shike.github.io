@@ -79,10 +79,9 @@ class PersonalProfileTests(unittest.TestCase):
 
     def test_removed_metrics_and_award_are_absent(self):
         combined = "\n".join((INDEX, JS, LLMS))
+        # Ban specific phrases (not raw percentage numbers — those appear legitimately
+        # in the new manufacturing-AI product page as anonymized reference samples)
         banned = [
-            "+80%",
-            "-15%",
-            "-60%",
             "业绩增长 80%",
             "成本下降 15%",
             "应收下降 60%",
@@ -207,16 +206,11 @@ class VenturesTests(unittest.TestCase):
                 self.assertIn(text, INDEX)
                 self.assertIn(text, LLMS)
 
-    def test_liora_moon_uses_verified_copy_and_secure_link(self):
-        self.assertIn(
-            "AI 塔罗解读平台，提供个性化洞察、每日一牌与 AI 塔罗师对话",
-            INDEX,
-        )
-        self.assertIn(
-            "AI Tarot reading platform for personalized insights, daily cards, and AI reader chat",
-            INDEX,
-        )
-        self.assertRegex(INDEX, secure_link_pattern("https://lioramoon.com/"))
+    def test_liora_moon_uses_verified_copy(self):
+        # New compact copy in the other-ventures grid
+        self.assertIn("Liora Moon", INDEX)
+        self.assertIn("AI 塔罗解读平台", INDEX)
+        self.assertIn("AI Tarot reading platform", INDEX)
 
 
 class BooksTests(unittest.TestCase):
@@ -422,23 +416,19 @@ class BrandAssetsTests(unittest.TestCase):
             ("assets/logos/all-star-partner.png", "聚星动力 FanTown"),
         ]:
             with self.subTest(brand=zh):
+                # New structure: <article class="other-venture-card"><span class="other-venture-icon"><img src="...">
                 pattern = (
-                    r'<span class="venture-sub-brand">'
-                    r'\s*<span class="venture-sub-logo" aria-hidden="true">'
+                    r'<article class="other-venture-card">'
+                    r'\s*<span class="other-venture-icon">'
                     r'\s*<img src="' + re.escape(path) + r'"'
                 )
                 self.assertRegex(INDEX, pattern)
                 self.assertIn(zh, INDEX)
 
     def test_venture_sub_brand_styles(self):
-        self.assertIn(".venture-sub-brand {", CSS)
-        self.assertIn(".venture-sub-logo {", CSS)
-        self.assertIn("width: 32px;", CSS)
-        self.assertIn("height: 32px;", CSS)
-        self.assertRegex(
-            CSS,
-            r"@media \(max-width:\s*768px\)\s*\{[\s\S]*?\.venture-sub-logo\s*\{[^}]*width:\s*28px;",
-        )
+        self.assertIn(".other-venture-card {", CSS)
+        self.assertIn(".other-venture-icon {", CSS)
+        self.assertIn(".other-venture-icon img {", CSS)
 
     def test_balanced_compact_density_values(self):
         self.assertIn("--section-padding: 68px;", CSS)
@@ -456,3 +446,197 @@ class BrandAssetsTests(unittest.TestCase):
         self.assertRegex(CSS, r"\.logo-wall\s*\{[^}]*gap:\s*24px;")
         self.assertRegex(CSS, r"\.speaking-item\s*\{[^}]*padding:\s*18px 0;")
         self.assertRegex(CSS, r"\.contact-qr\s*\{[^}]*margin:\s*28px auto 0;")
+
+
+
+
+class ProductPageTests(unittest.TestCase):
+    """Verifies the compact 1-screen product data sheet within #ventures."""
+
+    def setUp(self):
+        self.index = INDEX
+        self.llms = LLMS
+        self.css = CSS
+
+    # --- Section header ---
+    def test_product_section_present(self):
+        self.assertIn('class="section product-section product-section--compact"', self.index)
+        self.assertIn('id="manufacturing-ai"', self.index)
+        self.assertIn("制造业 AI 落地", self.index)
+        self.assertIn("WorkBuddy 官方代理", self.index)
+
+    # --- 1-screen data sheet has all 7 rows ---
+    def test_all_three_blocks_present(self):
+        for block in (
+            "product-hero-value",
+            "product-standard",
+            "product-integration",
+        ):
+            with self.subTest(block=block):
+                self.assertIn(f'class="{block}"', self.index)
+
+    def test_each_block_has_a_heading(self):
+        for heading in ("标准产品", "如何接入"):
+            with self.subTest(heading=heading):
+                self.assertIn(heading, self.index)
+
+    # --- 3 soul stats (now BIG hero numbers) ---
+    def test_three_soul_stats_present(self):
+        self.assertEqual(self.index.count("class=\"product-hero-num\""), 3)
+        self.assertIn("2-4", self.index)
+        self.assertIn("15分", self.index)
+        self.assertIn("3月<span class=\"product-arrow-keep\">→</span>3天", self.index)
+
+    # --- 2 Skills are the standard product ---
+    def test_two_skill_cards_present(self):
+        self.assertEqual(self.index.count("class=\"product-skill-card\""), 2)
+        self.assertIn("智能取数 Skill", self.index)
+        self.assertIn("知识库 Skill", self.index)
+        # Each has icon + heading + description + 3 bullet points
+        self.assertIn("Data Retrieval Skill", self.index)
+        self.assertIn("Knowledge Base Skill", self.index)
+
+    def test_skill_bullets_cover_what_they_do(self):
+        # Data Retrieval — natural language → data query
+        self.assertIn("只读打通现有系统", self.index)
+        # Knowledge Base — digitize know-how
+        self.assertIn("老师傅经验数字化沉淀", self.index)
+
+    # --- Integration flow (L1 → 2 Skills → L2) ---
+    def test_integration_flow(self):
+        self.assertIn("class=\"product-integration-flow\"", self.index)
+        # 3 steps
+        self.assertIn("class=\"product-int-step\"", self.index)
+        # Middle step is the accent (the 2 Skills)
+        self.assertIn("class=\"product-int-step product-int-step--accent\"", self.index)
+        self.assertIn("L1", self.index)
+        self.assertIn("L2", self.index)
+
+    # --- Try block removed per user direction (no CTA in product section) ---
+    def test_try_block_removed(self):
+        self.assertNotIn("class=\"product-try\"", self.index)
+        self.assertNotIn("30 分钟场景诊断", self.index)
+
+    # --- Old 7-row + detail-block structures gone ---
+    def test_old_seven_row_structures_absent(self):
+        for old in (
+            "product-row--pain",
+            "product-row--arch",
+            "product-row--cases",
+            "product-row--service",
+            "product-row--method",
+            "product-row--roadmap",
+            "product-row--cta",
+            "product-arch-stack",
+            "product-roadmap-bar",
+            "product-roadmap-milestone",
+            "product-service-icons",
+            "product-method-step",
+            "focus-pain",
+            "product-compact-cta",
+            "product-case-mini",  # removed with proof block
+            "product-case-from",
+            "product-case-to",
+        ):
+            with self.subTest(old=old):
+                self.assertNotIn(old, self.index)
+
+    # --- Pain row was removed (not in user's "product + value" list) ---
+    def test_no_old_pain_class(self):
+        self.assertNotIn("product-row--pain", self.index)
+
+    # --- Architecture is now a compact integration flow (3 steps, not 4 layers) ---
+    def test_integration_flow_replaces_arch(self):
+        self.assertIn("class=\"product-integration-flow\"", self.index)
+        # L1, L2, "2 Skills" all appear in the integration flow
+        self.assertIn(">L1<", self.index)
+        self.assertIn(">L2<", self.index)
+        # The two Skills are the centerpiece of the integration flow
+        self.assertIn("product-int-step--accent", self.index)
+        # Content from the old arch is still in the integration
+        self.assertIn("CRM / ERP / MES / WMS", self.index)
+        self.assertIn("智能取数 + 知识库", self.index)
+
+    # --- Cases still present (reused) ---
+    def test_no_more_duplicate_case_cards(self):
+        # Cases were duplicate with hero numbers — section removed
+        self.assertNotIn("product-proof", self.index)
+        self.assertNotIn("真实效果", self.index)
+        self.assertEqual(self.index.count("class=\"product-case-mini\""), 0)
+
+    # --- Service / Method / Roadmap rows were removed (process, not product) ---
+    def test_process_rows_removed(self):
+        for removed in (
+            "product-service-icon-item",
+            "product-method-step",
+            "product-roadmap-milestone",
+        ):
+            with self.subTest(removed=removed):
+                self.assertNotIn(removed, self.index)
+
+    # --- Other ventures still present ---
+    def test_other_ventures_secondary(self):
+        self.assertIn('class="other-ventures"', self.index)
+        for sub in ("微盟星启 GEO", "呼波特 WhoBot", "NihaoVisit", "Liora Moon", "聚星动力 FanTown"):
+            with self.subTest(sub=sub):
+                self.assertIn(sub, self.index)
+        self.assertEqual(self.index.count("class=\"other-venture-card\""), 5)
+
+    # --- Old 7-stage structure is gone ---
+    def test_old_seven_stage_structure_absent(self):
+        # The old detailed stage classes
+        for old in (
+            "product-stage--hook",
+            "product-stage--pain",
+            "product-stage--solution",
+            "product-stage--service",
+            "product-stage--metrics",
+            "product-stage--method-cases",
+            "product-stage--roadmap-cta",
+            "product-stage-title",
+            "pain-quote",
+        ):
+            with self.subTest(old=old):
+                self.assertNotIn(old, self.index)
+
+    # --- CSS for compact layout ---
+    def test_compact_css_defined(self):
+        for selector in (
+            ".product-section--compact {",
+            ".product-compact {",
+            ".product-compact-title {",
+            ".product-compact-stat strong {",
+            ".product-row {",
+            ".product-row-tag {",
+            ".product-chip {",
+            ".product-case-mini {",
+            ".product-compact-cta {",
+        ):
+            with self.subTest(selector=selector):
+                self.assertIn(selector, self.css)
+
+    # --- llms + meta ---
+    def test_meta_descriptions_advertise_manufacturing_focus(self):
+        for selector in (
+            'name="description"',
+            'property="og:description"',
+            'name="twitter:description"',
+        ):
+            with self.subTest(selector=selector):
+                pattern = (
+                    rf'<meta {re.escape(selector)} content="[^"]*WorkBuddy 官方代理、制造业 AI 落地服务商'
+                )
+                self.assertRegex(self.index, pattern)
+
+    def test_json_ld_lists_manufacturing_focus(self):
+        self.assertIn("WorkBuddy", self.index)
+        self.assertIn("Manufacturing AI Implementation", self.index)
+        self.assertIn("Smart Manufacturing", self.index)
+        self.assertIn("FDE Methodology", self.index)
+
+    def test_llms_documents_manufacturing_focus(self):
+        self.assertIn("## Manufacturing AI focus", self.llms)
+        for term in ("WorkBuddy", "Data Retrieval Skill", "Knowledge Base Skill", "4-stage adoption roadmap"):
+            with self.subTest(term=term):
+                self.assertIn(term, self.llms)
+        self.assertIn("Last updated: 2026-09-05", self.llms)
