@@ -1,642 +1,655 @@
-from pathlib import Path
+"""Contract tests for the homepage.
+
+Five groups:
+  1. Structure     — section ids, anchors, heading order
+  2. Bilingual     — the data-en / data-en-aria / data-en-alt contract
+  3. Design system — tokens, WCAG contrast, breakpoints, CSS hygiene
+  4. Machine layer — page facts cross-checked against JSON-LD / llms.txt / sitemap
+  5. Red lines     — retired claims, link safety, image rules, asset integrity
+
+These deliberately assert *invariants*, not marketing copy or pixel values:
+rewording a section or retuning a spacing value should not fail the suite, but
+breaking the i18n contract, dropping contrast below AA, or letting the
+machine-readable layer drift from the visible page should.
+
+Run: python3 -m unittest discover -s tests
+"""
+
 import json
 import re
 import struct
 import unittest
 import xml.etree.ElementTree as ET
+from datetime import date
+from html.parser import HTMLParser
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+
+VOID = {
+    "area", "base", "br", "col", "embed", "hr", "img", "input",
+    "link", "meta", "param", "source", "track", "wbr",
+}
+
+# WCAG AA for normal-size text.
+AA = 4.5
 
 
 def read(path):
     return (ROOT / path).read_text(encoding="utf-8")
 
 
-INDEX = read("index.html")
+class Doc(HTMLParser):
+    """Minimal DOM collector: element tree, own text, and attribute lookup."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.root = {"tag": "[root]", "attrs": {}, "children": [], "text": []}
+        self.open = [self.root]
+
+    def _add(self, tag, attrs):
+        el = {
+            "tag": tag,
+            "attrs": attrs,
+            "children": [],
+            "parent": self.open[-1],
+            "text": [],
+        }
+        self.open[-1]["children"].append(el)
+        return el
+
+    def handle_starttag(self, tag, attrs):
+        el = self._add(tag, dict(attrs))
+        if tag not in VOID:
+            self.open.append(el)
+
+    def handle_startendtag(self, tag, attrs):
+        self._add(tag, dict(attrs))
+
+    def handle_endtag(self, tag):
+        for i in range(len(self.open) - 1, 0, -1):
+            if self.open[i]["tag"] == tag:
+                del self.open[i:]
+                return
+
+    def handle_data(self, data):
+        self.open[-1]["text"].append(data)
+
+
+def walk(el):
+    yield el
+    for child in el["children"]:
+        yield from walk(child)
+
+
+def own_text(el):
+    return re.sub(r"\s+", " ", "".join(el["text"])).strip()
+
+
+def classes(el):
+    return set((el["attrs"].get("class") or "").split())
+
+
+def first(doc, tag=None, cls=None, attr=None):
+    for el in walk(doc.root):
+        if tag and el["tag"] != tag:
+            continue
+        if cls and cls not in classes(el):
+            continue
+        if attr and attr not in el["attrs"]:
+            continue
+        return el
+    return None
+
+
+def find_all(doc, tag=None, cls=None, attr=None):
+    out = []
+    for el in walk(doc.root):
+        if tag and el["tag"] != tag:
+            continue
+        if cls and cls not in classes(el):
+            continue
+        if attr and attr not in el["attrs"]:
+            continue
+        out.append(el)
+    return out
+
+
+INDEX_SRC = read("index.html")
 CSS = read("css/style.css")
 JS = read("js/main.js")
 LLMS = read("llms.txt")
-BOOKS = (
-    {
-        "zh": "《AI Coding：人人都是程序员》",
-        "en": "AI Coding: Everyone Is a Programmer",
-        "cover": "assets/books/ai-coding-cover.jpg",
-        "width": 896,
-        "height": 1200,
-        "url": "https://github.com/shike/ai_coding_book",
-    },
-    {
-        "zh": "《FDE：AI 的胜负不在于模型》",
-        "en": "FDE: Winning and Losing in AI Isn't About the Model",
-        "cover": "assets/books/fde-cover.svg",
-        "width": 800,
-        "height": 500,
-        "url": "https://github.com/shike/FDE-AI-race-isn-t-won-on-models",
-    },
-)
+SITEMAP = read("sitemap.xml")
+DOC = Doc()
+DOC.feed(INDEX_SRC)
 
 
-def secure_link_pattern(url):
-    return rf'href="{re.escape(url)}"[^>]+target="_blank"[^>]+rel="noopener noreferrer"'
+def jsonld():
+    m = re.search(
+        r'<script type="application/ld\+json">(.*?)</script>', INDEX_SRC, re.S
+    )
+    return json.loads(m.group(1))
 
 
-class PersonalProfileTests(unittest.TestCase):
-    def test_hero_uses_approved_positioning(self):
-        self.assertIn(
-            "连续创业者 / 水滴跃动 Dropleap 创始人 / 企业级 AI 实践者",
-            INDEX,
-        )
-        self.assertIn(
-            "Serial Entrepreneur / Founder of Dropleap / Enterprise AI Practitioner",
-            INDEX,
-        )
-        self.assertIn("现聚焦企业级 AI Agent 与 GEO", INDEX)
-
-    def test_about_covers_approved_narrative(self):
-        required = [
-            "16 年职业经历横跨软件工程、互联网产品、创业与企业经营",
-            "完成从产品构建、团队组建到机构融资的完整创业过程",
-            "可靠性、可观测性、可评估性与持续运营能力",
-            "GEO 不只是内容投放或关键词优化",
-            "《AI Coding：人人都是程序员》",
-            "《FDE：AI 的胜负不在于模型》",
-            "His 16-year career spans software engineering, internet products, entrepreneurship, and business operations",
-            "taking it through product development, team formation, and institutional funding",
-            "the reliability, observability, evaluability, and long-term operability of AI systems",
-            "He views GEO not simply as content distribution or keyword optimization",
-        ]
-        for text in required:
-            with self.subTest(text=text):
-                self.assertIn(text, INDEX)
-
-    def test_stats_use_experience_venture_and_books(self):
-        self.assertIn("年技术、产品与商业实践", INDEX)
-        self.assertIn("连续创业与产品构建", INDEX)
-        self.assertIn("AI 主题著作", INDEX)
-        self.assertIn(">0→1<", INDEX)
-        self.assertIn(">2 本<", INDEX)
-        self.assertIn('data-en-aria="Key career indicators"', INDEX)
-
-    def test_removed_metrics_and_award_are_absent(self):
-        combined = "\n".join((INDEX, JS, LLMS))
-        # Ban specific phrases (not raw percentage numbers — those appear legitimately
-        # in the new manufacturing-AI product page as anonymized reference samples)
-        banned = [
-            "业绩增长 80%",
-            "成本下降 15%",
-            "应收下降 60%",
-            "阿里云 AI 大赛银奖",
-            "Alibaba Cloud AI Competition Silver Award",
-        ]
-        for text in banned:
-            with self.subTest(text=text):
-                self.assertNotIn(text, combined)
-
-    def test_language_metadata_uses_new_positioning(self):
-        self.assertIn(
-            "title: '施可｜连续创业者、Dropleap 创始人、企业级 AI 实践者'",
-            JS,
-        )
-        self.assertIn(
-            "title: 'Shi Ke — Serial Entrepreneur, Founder of Dropleap, Enterprise AI Practitioner'",
-            JS,
-        )
-        self.assertIn("企业级 AI Agent、GEO 与应用工程", JS)
-        self.assertIn('data-en="Linhuiba">邻汇吧</p>', INDEX)
+def graph():
+    return {node.get("@id"): node for node in jsonld()["@graph"]}
 
 
-class LogoWallTests(unittest.TestCase):
-    def test_logo_wall_groups(self):
-        expected_brands = [
-            "assets/logos/xiaomi.svg",
-            "assets/logos/xpeng.svg",
-            "assets/logos/volkswagen.svg",
-            "assets/logos/dongfeng-nissan.png",
-            "assets/logos/saic.png",
-            "assets/logos/yhetea.png",
-            "assets/logos/kawangke.png",
-            "assets/logos/kuafu-zhachua.png",
-            "assets/logos/zhengxin-jipai.png",
-            "assets/logos/sanjin-tangbao.png",
-            "assets/logos/ginoble.png",
-            "assets/logos/xiaotiancai.svg",
-            "assets/logos/hao-xianglai.png",
-            "assets/logos/aldi.png",
-        ]
-        for path in expected_brands:
-            with self.subTest(asset=path):
-                self.assertIn(f'src="{path}"', INDEX)
-                self.assertTrue((ROOT / path).is_file(), f"missing {path}")
-                self.assertLess((ROOT / path).stat().st_size, 500_000)
-        self.assertIn("万益蓝 WITSBB", INDEX)
-        self.assertIn("小象超市", INDEX)
-        self.assertRegex(INDEX, r'data-en="ASICS"[^<]*>亚瑟士</div>')
-        self.assertRegex(INDEX, r'data-en="Yifeng Pharmacy"[^<]*>益丰大药房</div>')
-        self.assertNotIn('>医药</h4>', INDEX)
-        self.assertNotIn("--brand-color:#D4A853", INDEX)
-        self.assertNotIn("--brand-color:#E5302C", INDEX)
-
-    def test_logo_wall_uses_verified_assets(self):
-        expected = [
-            "assets/logos/xiaomi.svg",
-            "assets/logos/xpeng.svg",
-            "assets/logos/volkswagen.svg",
-            "assets/logos/yhetea.png",
-            "assets/logos/kawangke.png",
-            "assets/logos/ginoble.png",
-            "assets/logos/xiaotiancai.svg",
-        ]
-        for path in expected:
-            with self.subTest(asset=path):
-                self.assertIn(f'src="{path}"', INDEX)
-                if path.endswith((".png", ".svg", ".jpg")) and path not in (
-                    "assets/logos/xiaomi.svg",
-                    "assets/logos/xpeng.svg",
-                    "assets/logos/volkswagen.svg",
-                    "assets/logos/xiaotiancai.svg",
-                    "assets/logos/ginoble.png",
-                ):
-                    self.assertTrue((ROOT / path).is_file(), f"missing {path}")
-                    self.assertLess((ROOT / path).stat().st_size, 50_000)
-
-    def test_logo_card_styles_are_uniform(self):
-        self.assertIn(".logo-card {", CSS)
-        self.assertIn("height: 64px;", CSS)
-        self.assertIn("display: flex;", CSS)
-        self.assertIn("align-items: center;", CSS)
-        self.assertIn("justify-content: center;", CSS)
-        self.assertIn(".logo-card.has-logo img {", CSS)
-        self.assertIn("max-width: 80%;", CSS)
-        self.assertIn("max-height: 40px;", CSS)
-        self.assertIn("object-fit: contain;", CSS)
-        self.assertRegex(CSS, r"@media \(max-width:\s*768px\)\s*\{[\s\S]*?\.logo-card\s*\{[^}]*height:\s*56px;")
-        self.assertIn(
-            "title: '施可｜连续创业者、Dropleap 创始人、企业级 AI 实践者'",
-            JS,
-        )
-        self.assertIn(
-            "title: 'Shi Ke — Serial Entrepreneur, Founder of Dropleap, Enterprise AI Practitioner'",
-            JS,
-        )
-        self.assertIn("企业级 AI Agent、GEO 与应用工程", JS)
-        social_alt = "Shi Ke — Serial Entrepreneur, Founder of Dropleap, Enterprise AI Practitioner"
-        self.assertIn(f'<meta property="og:image:alt" content="{social_alt}">', INDEX)
-        self.assertIn(f'<meta name="twitter:image:alt" content="{social_alt}">', INDEX)
-        self.assertIn('data-en="Linhuiba">邻汇吧</p>', INDEX)
+# --------------------------------------------------------------- colour maths
 
 
-class VenturesTests(unittest.TestCase):
-    def test_removed_products_are_absent(self):
-        combined = INDEX + "\n" + LLMS
-        banned = [
-            "数商方略",
-            "Shushang Fanglue",
-            "shushangfanglue.com",
-            "乐奇 Minibus EV",
-            "Leqi Minibus EV",
-            "minibus-ev.com",
-        ]
-        for text in banned:
-            with self.subTest(text=text):
-                self.assertNotIn(text, combined)
-
-    def test_approved_products_are_present(self):
-        for text in ["微盟星启 GEO", "呼波特 WhoBot", "NihaoVisit", "Liora Moon"]:
-            with self.subTest(text=text):
-                self.assertIn(text, INDEX)
-                self.assertIn(text, LLMS)
-
-    def test_liora_moon_uses_verified_copy(self):
-        # New compact copy in the other-ventures grid
-        self.assertIn("Liora Moon", INDEX)
-        self.assertIn("AI 塔罗解读平台", INDEX)
-        self.assertIn("AI Tarot reading platform", INDEX)
+def _channel(value):
+    value = value / 255
+    return value / 12.92 if value <= 0.04045 else ((value + 0.055) / 1.055) ** 2.4
 
 
-class BooksTests(unittest.TestCase):
-    def test_local_cover_assets_use_expected_formats(self):
-        jpg_path = ROOT / "assets/books/ai-coding-cover.jpg"
-        svg_path = ROOT / "assets/books/fde-cover.svg"
-        self.assertTrue(jpg_path.is_file())
-        self.assertTrue(svg_path.is_file())
-        with jpg_path.open("rb") as stream:
-            self.assertEqual(stream.read(3), b"\xff\xd8\xff")
-        self.assertLess(jpg_path.stat().st_size, 250_000)
-        svg = svg_path.read_text(encoding="utf-8")
-        self.assertRegex(svg, r'<svg[^>]+width="800"[^>]+height="500"')
+def luminance(hex_colour):
+    hex_colour = hex_colour.lstrip("#")
+    r, g, b = (int(hex_colour[i:i + 2], 16) for i in (0, 2, 4))
+    return 0.2126 * _channel(r) + 0.7152 * _channel(g) + 0.0722 * _channel(b)
 
-    def test_books_navigation_and_section_exist(self):
-        self.assertIn('href="#books"', INDEX)
-        self.assertIn('data-en="Books">著作</a>', INDEX)
-        self.assertIn('<section class="section" id="books">', INDEX)
-        self.assertIn('class="books-grid"', INDEX)
 
-    def test_both_books_use_local_covers_and_github_links(self):
-        for book in BOOKS:
-            with self.subTest(book=book["zh"]):
-                self.assertIn(book["zh"], INDEX)
-                self.assertIn(book["en"], INDEX)
-                self.assertRegex(
-                    INDEX,
-                    rf'src="{re.escape(book["cover"])}"[^>]+width="{book["width"]}" height="{book["height"]}"',
+def contrast(a, b):
+    la, lb = luminance(a), luminance(b)
+    hi, lo = max(la, lb), min(la, lb)
+    return (hi + 0.05) / (lo + 0.05)
+
+
+def tokens():
+    block = re.search(r":root\s*\{(.*?)\}", CSS, re.S).group(1)
+    return dict(re.findall(r"--([a-z0-9-]+):\s*([^;]+);", block))
+
+
+TOKENS = tokens()
+WHITE = "#ffffff"
+TINT = TOKENS.get("soft", "#f6f8fd").strip()
+
+
+def image_size(path):
+    """Return (width, height) for a PNG, JPEG or SVG on disk."""
+    data = (ROOT / path).read_bytes()
+    if data[:8] == b"\x89PNG\r\n\x1a\n":
+        w, h = struct.unpack(">II", data[16:24])
+        return w, h
+    if b"<svg" in data[:400]:
+        head = data[:400].decode("utf-8", "replace")
+        w = re.search(r'\bwidth="(\d+)"', head)
+        h = re.search(r'\bheight="(\d+)"', head)
+        if w and h:
+            return int(w.group(1)), int(h.group(1))
+        raise AssertionError(f"SVG without explicit dimensions: {path}")
+    i = 2
+    while i < len(data) - 9:
+        if data[i] != 0xFF:
+            i += 1
+            continue
+        marker = data[i + 1]
+        if marker in (0xD8, 0x01) or 0xD0 <= marker <= 0xD7:
+            i += 2
+            continue
+        if marker in (0xC0, 0xC1, 0xC2, 0xC3, 0xC5, 0xC6, 0xC7,
+                      0xC9, 0xCA, 0xCB, 0xCD, 0xCE, 0xCF):
+            h, w = struct.unpack(">HH", data[i + 5:i + 9])
+            return w, h
+        i += 2 + struct.unpack(">H", data[i + 2:i + 4])[0]
+    raise AssertionError(f"could not read image dimensions: {path}")
+
+
+def dequoted(text):
+    """Drop quote glyphs so typographic and straight quotes compare equal."""
+    return re.sub(r"[\u201c\u201d\u2018\u2019“”\"']", "", text)
+
+
+# ------------------------------------------------------------- 1. structure
+
+
+class StructureTests(unittest.TestCase):
+    def setUp(self):
+        self.sections = [el for el in walk(DOC.root) if el["tag"] == "section"]
+
+    def test_page_chrome_exists(self):
+        self.assertIsNotNone(first(DOC, tag="main"), "main#main missing")
+        self.assertIsNotNone(first(DOC, tag="nav"), "nav missing")
+        self.assertIsNotNone(first(DOC, tag="footer"), "footer missing")
+        self.assertTrue(find_all(DOC, cls="skip-link"), "skip link missing")
+
+    def test_sections_have_unique_ids(self):
+        ids = [el["attrs"].get("id") for el in self.sections]
+        self.assertNotIn(None, ids, "every section must carry an id")
+        self.assertEqual(len(ids), len(set(ids)), f"duplicate section ids: {ids}")
+
+    def test_every_nav_link_points_at_a_section(self):
+        ids = {el["attrs"]["id"] for el in self.sections}
+        links = find_all(DOC, tag="a", cls="nav-link")
+        self.assertGreaterEqual(len(links), 6)
+        for link in links:
+            href = link["attrs"].get("href", "")
+            self.assertTrue(href.startswith("#"), f"nav link not an anchor: {href}")
+            self.assertIn(href[1:], ids, f"nav link {href} has no matching section id")
+
+    def test_exactly_one_h1_and_one_h2_per_section(self):
+        headings = [el for el in walk(DOC.root)
+                    if re.fullmatch(r"h[1-6]", el["tag"])]
+        h1s = [h for h in headings if h["tag"] == "h1"]
+        self.assertEqual(len(h1s), 1, "the page must have exactly one h1")
+        for section in self.sections:
+            h2s = [el for el in walk(section) if el["tag"] == "h2"]
+            if section["attrs"]["id"] == "hero":
+                self.assertEqual(h2s, [], "hero is headed by the h1")
+            else:
+                self.assertEqual(
+                    len(h2s), 1,
+                    f"#{section['attrs']['id']} must have exactly one h2",
                 )
-                self.assertRegex(INDEX, secure_link_pattern(book["url"]))
 
-    def test_books_styles_include_responsive_grid(self):
-        for selector in [
-            ".books-grid",
-            ".book-card",
-            ".book-cover-frame",
-            ".book-cover",
-            ".book-link",
-        ]:
-            with self.subTest(selector=selector):
-                self.assertIn(selector, CSS)
+    def test_heading_levels_never_skip(self):
+        levels = [int(el["tag"][1]) for el in walk(DOC.root)
+                  if re.fullmatch(r"h[1-6]", el["tag"])]
+        self.assertTrue(levels, "no headings found")
+        self.assertEqual(levels[0], 1, "the first heading must be an h1")
+        for prev, cur in zip(levels, levels[1:]):
+            self.assertLessEqual(
+                cur, prev + 1, f"heading level jumps from h{prev} to h{cur}"
+            )
 
-    def test_cover_stage_is_shared_portrait_frame(self):
-        frame = re.search(r"\.book-cover-frame\s*\{(.*?)\}", CSS, re.DOTALL)
-        image = re.search(r"\.book-cover\s*\{(.*?)\}", CSS, re.DOTALL)
-        self.assertIsNotNone(frame)
-        self.assertIsNotNone(image)
-        self.assertIn("width: min(100%, 240px);", frame.group(1))
-        self.assertIn("aspect-ratio: 3 / 4;", frame.group(1))
-        self.assertIn("margin: 0 auto 24px;", frame.group(1))
-        self.assertIn("max-width: 100%;", image.group(1))
-        self.assertIn("max-height: 100%;", image.group(1))
-        self.assertIn("object-fit: contain;", image.group(1))
-        self.assertNotRegex(image.group(1), r"(?m)^\s*height:\s*100%;")
-        self.assertIn("width: min(100%, 220px);", CSS)
+    def test_sections_are_in_nav_order(self):
+        order = [el["attrs"]["id"] for el in self.sections]
+        links = [l["attrs"]["href"][1:] for l in find_all(DOC, tag="a", cls="nav-link")]
+        positions = [order.index(target) for target in links]
+        self.assertEqual(
+            positions, sorted(positions),
+            "nav links must follow the document order of their sections",
+        )
+
+
+# ------------------------------------------------------------- 2. bilingual
+
+
+class BilingualTests(unittest.TestCase):
+    def test_language_attributes(self):
+        html = first(DOC, tag="html")
+        self.assertEqual(html["attrs"].get("lang"), "zh-CN")
+        hreflang = {
+            el["attrs"].get("hreflang")
+            for el in find_all(DOC, tag="link")
+            if el["attrs"].get("rel") == "alternate"
+        }
+        self.assertEqual(hreflang, {"zh-CN", "en", "x-default"})
+
+    def test_no_data_en_on_elements_with_children(self):
+        """data-en replaces textContent, so tagged elements must be leaves.
+
+        An element with markup inside would have its inline links and <code>
+        nodes deleted on the first language switch, unrecoverably.
+        """
+        offenders = [
+            f"<{el['tag']} class=\"{el['attrs'].get('class', '')}\">"
+            for el in find_all(DOC, attr="data-en")
+            if el["children"]
+        ]
+        self.assertEqual(
+            offenders, [],
+            "data-en must only sit on leaf elements; found containers: "
+            + ", ".join(offenders),
+        )
+
+    def test_translation_attributes_are_well_formed(self):
+        for el in find_all(DOC, attr="data-en"):
+            value = el["attrs"]["data-en"].strip()
+            self.assertTrue(value, f"empty data-en on <{el['tag']}>")
+            self.assertNotEqual(
+                value, own_text(el),
+                f"data-en duplicates the Chinese text on <{el['tag']}>",
+            )
+        for el in find_all(DOC, attr="data-en-aria"):
+            self.assertIn("aria-label", el["attrs"])
+            self.assertTrue(el["attrs"]["data-en-aria"].strip())
+        for el in find_all(DOC, attr="data-en-alt"):
+            self.assertEqual(el["tag"], "img")
+            self.assertTrue(el["attrs"]["data-en-alt"].strip())
+
+    def test_coverage_is_substantial(self):
+        self.assertGreaterEqual(
+            len(find_all(DOC, attr="data-en")), 100,
+            "most visible strings should carry an English variant",
+        )
+        self.assertGreaterEqual(len(find_all(DOC, attr="data-en-alt")), 8)
+
+    def test_language_switch_accessible_name_contains_visible_text(self):
+        button = first(DOC, tag="button", cls="lang-switch")
+        self.assertIsNotNone(button, "language switch button missing")
+        for lang in ("zh", "en"):
+            visible = own_text(button) if lang == "zh" else button["attrs"]["data-en"]
+            name = (button["attrs"]["aria-label"] if lang == "zh"
+                    else button["attrs"]["data-en-aria"])
+            self.assertIn(
+                visible, name,
+                f"accessible name {name!r} must contain the visible label {visible!r}",
+            )
+
+    def test_js_guards_against_overwriting_markup(self):
+        self.assertIn(
+            "el.children.length > 0", JS,
+            "js/main.js must refuse to replace textContent on elements with children",
+        )
+        self.assertIn("data-en-alt", JS, "js/main.js must handle image alt text")
+
+    def test_meta_has_a_single_source_of_truth(self):
+        """Chinese title/description live in the HTML only; JS holds English."""
+        self.assertNotIn(
+            "连续创业者", JS,
+            "js/main.js must not duplicate the Chinese metadata",
+        )
+        self.assertIn("EN_META", JS)
+
+
+# --------------------------------------------------------- 3. design system
+
+
+class DesignSystemTests(unittest.TestCase):
+    REQUIRED_TOKENS = [
+        "blue", "blue-text", "blue-strong", "blue-soft", "blue-line", "blue-light",
+        "ink", "body", "mut", "faint", "line", "soft", "dark", "white",
+        "r", "r-l", "sh-1", "sh-2", "sh-3", "font", "max-width", "gutter", "sec-pad",
+    ]
+
+    TEXT_TOKENS = ["ink", "body", "mut", "faint"]
+
+    def test_required_tokens_are_defined(self):
+        missing = [t for t in self.REQUIRED_TOKENS if t not in TOKENS]
+        self.assertEqual(missing, [], f"missing design tokens: {missing}")
+
+    def test_text_tokens_pass_wcag_aa_on_both_surfaces(self):
+        for name in self.TEXT_TOKENS:
+            colour = TOKENS[name].strip()
+            for surface in (WHITE, TINT):
+                ratio = contrast(colour, surface)
+                self.assertGreaterEqual(
+                    round(ratio, 2), AA,
+                    f"--{name} {colour} on {surface} is only {ratio:.2f}:1",
+                )
+
+    def test_accent_pairings_pass_wcag_aa(self):
+        pairs = [
+            (WHITE, TOKENS["blue-text"].strip(), "button label on accent fill"),
+            (TOKENS["blue-text"].strip(), TOKENS["blue-soft"].strip(), "accent on chip"),
+            (TOKENS["blue-text"].strip(), TINT, "accent on tinted section"),
+            (TOKENS["blue-light"].strip(), TOKENS["dark"].strip(), "accent on dark block"),
+            (WHITE, TOKENS["dark"].strip(), "white on dark block"),
+        ]
+        for fg, bg, label in pairs:
+            ratio = contrast(fg, bg)
+            self.assertGreaterEqual(
+                round(ratio, 2), AA, f"{label}: {fg} on {bg} is only {ratio:.2f}:1"
+            )
+
+    def test_brand_blue_is_never_used_for_text(self):
+        """--blue is 4.28:1 on white: large or decorative use only."""
+        offenders = re.findall(r"color:\s*var\(--blue\)", CSS)
+        self.assertEqual(
+            offenders, [],
+            "use --blue-text (or darker) for text; --blue is for fills and large type",
+        )
+
+    def test_the_old_low_contrast_palette_is_gone(self):
+        for legacy in (
+            "#94a3b8", "#475569", "#4f46e5", "#4338ca", "#818cf8",
+            "#0f172a", "#1e1b4b", "#312e81", "#6366f1",
+            "rgba(79, 70, 229", "rgba(79,70,229",
+        ):
+            self.assertNotIn(legacy, CSS, f"legacy colour {legacy} still in style.css")
+
+    def test_css_hygiene(self):
+        self.assertNotIn("!important", CSS, "style.css must not use !important")
+        self.assertEqual(
+            CSS.count("{"), CSS.count("}"), "unbalanced braces in style.css"
+        )
+        self.assertLess(
+            len(CSS.splitlines()), 2600,
+            "style.css has grown past its post-rewrite budget",
+        )
+
+    def test_only_two_responsive_breakpoints(self):
+        found = set(re.findall(r"@media \(max-width:\s*(\d+)px\)", CSS))
+        self.assertEqual(
+            found, {"1024", "768"},
+            f"breakpoints should be exactly 1024 and 768, found {sorted(found)}",
+        )
+
+    def test_accessibility_basics_are_styled(self):
+        self.assertIn(":focus-visible", CSS)
+        self.assertIn("prefers-reduced-motion", CSS)
+        self.assertIn(".skip-link", CSS)
+        self.assertIn(".nav-menu.active", CSS, "mobile menu open state missing")
+        self.assertIn(".qr-modal[hidden]", CSS, "modal hidden state must be styled")
+
+    def test_retired_dead_selectors_are_gone(self):
+        for dead in (
+            ".product-section--compact", ".product-case-mini", ".product-compact",
+            ".product-row", ".product-chip", ".venture-card", ".project-badge",
+            ".project-tag", ".focus-details", ".product-stage", ".pain-quote",
+            ".arch-layer",
+        ):
+            self.assertNotIn(dead, CSS, f"dead selector {dead} still in style.css")
+
+
+# ---------------------------------------------------------- 4. machine layer
 
 
 class MachineReadableTests(unittest.TestCase):
-    def json_ld_graph(self):
-        match = re.search(
-            r'<script type="application/ld\+json">\s*(.*?)\s*</script>',
-            INDEX,
-            re.DOTALL,
-        )
-        self.assertIsNotNone(match)
-        return json.loads(match.group(1))["@graph"]
+    def setUp(self):
+        self.graph = graph()
 
-    def test_json_ld_contains_two_books_linked_to_person(self):
-        books = [node for node in self.json_ld_graph() if node.get("@type") == "Book"]
-        self.assertEqual(len(books), 2)
-        by_url = {book["url"]: book for book in books}
-        expected = {
-            book["url"]: f'https://shike.github.io/{book["cover"]}' for book in BOOKS
+    def test_graph_has_the_expected_nodes(self):
+        types = {node.get("@type") for node in self.graph.values()}
+        for expected in ("Person", "Organization", "WebSite", "ProfilePage",
+                         "FAQPage", "Book"):
+            self.assertIn(expected, types, f"JSON-LD is missing a {expected} node")
+        books = [n for n in self.graph.values() if n.get("@type") == "Book"]
+        self.assertEqual(len(books), 3)
+
+    def test_faq_answers_are_populated(self):
+        faq = [n for n in self.graph.values() if n.get("@type") == "FAQPage"][0]
+        questions = faq["mainEntity"]
+        self.assertGreaterEqual(len(questions), 6)
+        for q in questions:
+            self.assertTrue(q["name"].strip())
+            self.assertTrue(q["acceptedAnswer"]["text"].strip())
+
+    def test_person_links_to_organization(self):
+        person = self.graph["https://shike.github.io/#person"]
+        org_id = person["worksFor"]["@id"]
+        self.assertIn(org_id, self.graph)
+        self.assertEqual(self.graph[org_id]["founder"]["@id"], person["@id"])
+
+    def test_book_facts_match_the_page_and_llms_txt(self):
+        books = [n for n in self.graph.values() if n.get("@type") == "Book"]
+        for book in books:
+            title = re.sub(r"[《》]", "", book["name"]).strip()
+            self.assertIn(title, INDEX_SRC, f"book {title} missing from index.html")
+            self.assertIn(title, LLMS, f"book {title} missing from llms.txt")
+            self.assertIn(book["url"], INDEX_SRC, f"{book['url']} not linked on the page")
+            self.assertIn(book["url"], LLMS, f"{book['url']} missing from llms.txt")
+
+    def test_case_figures_match_between_page_and_llms(self):
+        quotes = [
+            "Quoting speed is our biggest competitive advantage right now",
+            "The master craftsmen's experience is finally captured",
+        ]
+        stripped = dequoted(INDEX_SRC)
+        stripped_llms = dequoted(LLMS)
+        for quote in quotes:
+            needle = dequoted(quote)
+            self.assertIn(needle, stripped, "case quote missing from index.html")
+            self.assertIn(needle, stripped_llms, "case quote missing from llms.txt")
+        for figure in ("99.2%", "25%", "30%", "45%"):
+            self.assertIn(figure, INDEX_SRC, f"{figure} missing from index.html")
+            self.assertIn(figure, LLMS, f"{figure} missing from llms.txt")
+
+    def test_client_footprint_is_stated_once(self):
+        self.assertIn("100+", INDEX_SRC)
+        self.assertIn("100+", LLMS)
+        self.assertNotIn("30+", LLMS, "llms.txt still claims the old 30+ footprint")
+
+    def test_llms_documents_every_section_theme(self):
+        for heading in (
+            "## Manufacturing AI focus",
+            "## Client cases",
+            "## Career path",
+            "## Books",
+            "## Public speaking",
+            "## Contact",
+        ):
+            self.assertIn(heading, LLMS, f"llms.txt is missing {heading}")
+
+    def test_all_three_dates_agree_and_are_not_in_the_future(self):
+        page = re.search(r'"dateModified":\s*"(\d{4}-\d{2}-\d{2})"', INDEX_SRC).group(1)
+        sitemap = ET.fromstring(SITEMAP).find(
+            "s:url/s:lastmod", {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+        ).text
+        llms = re.search(r"Last updated:\s*(\d{4}-\d{2}-\d{2})", LLMS).group(1)
+        self.assertEqual(
+            {page, sitemap, llms}, {page},
+            f"dateModified={page} lastmod={sitemap} llms={llms} must match",
+        )
+        self.assertLessEqual(
+            date.fromisoformat(page), date.today(), "lastmod is in the future"
+        )
+
+    def test_canonical_and_open_graph_are_consistent(self):
+        canonicals = [
+            el["attrs"]["href"] for el in find_all(DOC, tag="link")
+            if el["attrs"].get("rel") == "canonical"
+        ]
+        self.assertEqual(canonicals, ["https://shike.github.io/"])
+        og_url = [
+            el["attrs"]["content"] for el in find_all(DOC, tag="meta")
+            if el["attrs"].get("property") == "og:url"
+        ]
+        self.assertEqual(og_url, ["https://shike.github.io/"])
+        for prop in ("og:image", "twitter:image"):
+            found = [
+                el["attrs"]["content"] for el in find_all(DOC, tag="meta")
+                if el["attrs"].get("property") == prop or el["attrs"].get("name") == prop
+            ]
+            self.assertEqual(len(found), 1, f"{prop} missing")
+            self.assertTrue(found[0].startswith("https://shike.github.io/"))
+
+    def test_meta_descriptions_share_the_positioning(self):
+        for attr, name in (("name", "description"), ("property", "og:description"),
+                           ("name", "twitter:description")):
+            found = [
+                el["attrs"]["content"] for el in find_all(DOC, tag="meta")
+                if el["attrs"].get(attr) == name
+            ]
+            self.assertEqual(len(found), 1, f"{name} missing")
+            self.assertIn("WorkBuddy", found[0])
+            self.assertIn("2-4 周", found[0])
+
+
+# -------------------------------------------------------------- 5. red lines
+
+
+RETIRED = [
+    "数商方略", "Shushang Fanglue", "shushangfanglue.com",
+    "乐奇 Minibus EV", "Leqi Minibus EV", "minibus-ev.com",
+    "阿里云 AI 大赛银奖", "Alibaba Cloud AI Competition Silver Award",
+    "业绩增长 80%", "成本下降 15%", "应收下降 60%",
+    "医药",
+]
+
+
+class RedLineTests(unittest.TestCase):
+    def test_retired_claims_never_reappear(self):
+        for term in RETIRED:
+            for source, name in ((INDEX_SRC, "index.html"), (LLMS, "llms.txt"),
+                                 (JS, "js/main.js")):
+                self.assertNotIn(term, source, f"{name} still mentions {term!r}")
+
+    def test_external_links_open_safely(self):
+        for el in find_all(DOC, tag="a"):
+            href = el["attrs"].get("href", "")
+            if not href.startswith("http"):
+                continue
+            if href.startswith("https://shike.github.io"):
+                continue
+            self.assertTrue(href.startswith("https://"), f"non-https link: {href}")
+            self.assertEqual(
+                el["attrs"].get("target"), "_blank", f"{href} must open in a new tab"
+            )
+            self.assertIn(
+                "noopener", el["attrs"].get("rel", ""), f"{href} needs rel=noopener"
+            )
+
+    def test_images_declare_dimensions_and_loading(self):
+        images = find_all(DOC, tag="img")
+        self.assertGreaterEqual(len(images), 20)
+        for el in images:
+            src = el["attrs"].get("src", "")
+            self.assertIn("alt", el["attrs"], f"{src} has no alt attribute")
+            self.assertIn("width", el["attrs"], f"{src} has no width")
+            self.assertIn("height", el["attrs"], f"{src} has no height")
+            self.assertEqual(
+                el["attrs"].get("decoding"), "async", f"{src} should decode async"
+            )
+            if src.startswith("assets/hero/"):
+                self.assertNotIn(
+                    "loading", el["attrs"],
+                    "the hero image is above the fold and must not be lazy",
+                )
+            else:
+                self.assertEqual(
+                    el["attrs"].get("loading"), "lazy", f"{src} should lazy-load"
+                )
+
+    def test_no_hotlinked_images(self):
+        for el in find_all(DOC, tag="img"):
+            src = el["attrs"].get("src", "")
+            self.assertFalse(
+                src.startswith("http"), f"image is hotlinked instead of local: {src}"
+            )
+
+    def test_referenced_local_assets_exist(self):
+        refs = {
+            el["attrs"]["src"] for el in find_all(DOC, tag="img")
+            if el["attrs"].get("src", "").startswith("assets/")
         }
-        self.assertEqual(set(by_url), set(expected))
-        for url, image in expected.items():
-            with self.subTest(url=url):
-                self.assertEqual(by_url[url]["author"], {"@id": "https://shike.github.io/#person"})
-                self.assertEqual(by_url[url]["image"], image)
-                self.assertEqual(by_url[url]["inLanguage"], "zh-CN")
+        self.assertGreaterEqual(len(refs), 20)
+        for ref in sorted(refs):
+            self.assertTrue((ROOT / ref).is_file(), f"missing asset: {ref}")
 
-    def test_profile_and_sitemap_dates_are_current(self):
-        self.assertIn('"dateModified": "2026-08-04"', INDEX)
-        root = ET.parse(ROOT / "sitemap.xml").getroot()
-        namespace = {"s": "http://www.sitemaps.org/schemas/sitemap/0.9"}
-        self.assertEqual(root.find("s:url/s:lastmod", namespace).text, "2026-08-04")
+    def test_asset_dimensions_match_their_declarations(self):
+        """Raster assets must declare their true size, or the layout reserves
+        the wrong box and shifts when the image lands. SVGs scale to the box
+        their CSS gives them, so only the presence of a size is required."""
+        for el in find_all(DOC, tag="img"):
+            src = el["attrs"].get("src", "")
+            if not src.startswith("assets/") or src.endswith(".svg"):
+                continue
+            actual = image_size(src)
+            declared = (int(el["attrs"]["width"]), int(el["attrs"]["height"]))
+            self.assertEqual(
+                declared, actual,
+                f"{src} declares {declared} but is {actual} on disk",
+            )
 
-    def test_llms_summary_contains_books_and_current_date(self):
-        self.assertIn("## Books", LLMS)
-        for book in BOOKS:
-            self.assertIn(book["url"], LLMS)
-        self.assertIn("Last updated: 2026-08-04", LLMS)
+    def test_social_preview_is_renderable(self):
+        self.assertTrue((ROOT / "og-cover.svg").is_file())
+        self.assertEqual(image_size("og-cover.jpg"), (1200, 630))
 
-
-class SpeakingTests(unittest.TestCase):
-    def setUp(self):
-        self.index = read("index.html")
-        self.llms = read("llms.txt")
-
-    def test_speaking_items_use_approved_copy(self):
-        self.assertNotIn("破界·2024刀法年度品效峰会", self.index)
-        self.assertNotIn("Small & Beautiful, Flexible & Precise", self.index)
-        self.assertNotIn("晨间闭场开杠", self.index)
-        self.assertNotIn("2024-12-05", self.index)
-        self.assertNotIn("2024-12-26", self.index)
-        self.assertNotIn('datetime="2024-12', self.index)
-        self.assertIn("刀法", self.index)
-        self.assertIn("TBI", self.index)
-        self.assertIn("Small, Flexible, Measurable", self.index)
-        self.assertIn("Small, Beautiful, Agile, Precise", self.index)
-        self.assertIn("Panel Moderator: Super Single Product vs. Brand Matrix", self.index)
-        self.assertIn("Slow-Pop-Up Experiential Marketing", self.index)
-        self.assertIn("Channel Bottlenecks", self.index)
-        self.assertIn("How Slow-Pop-Ups Help Brands", self.index)
-        self.assertIn("ChengDao (成于渠道) Channel", self.index)
-        self.assertIn("Closed-Door Morning Panel", self.index)
-        self.assertIn("Small, Flexible, Measurable", self.llms)
-
-    def test_speaking_items_use_approved_summary_in_llms(self):
-        self.assertNotIn("Slow-Pop-Up Experiential Marketing, Reshaping Offline Channel Value", self.llms)
-        self.assertNotIn("Small & Beautiful, Flexible & Precise", self.llms)
-        self.assertNotIn("2024-12-05", self.llms)
-        self.assertNotIn("2024-12-26", self.llms)
-        self.assertIn("Daofa (刀法) 2024 Annual Brand Performance Summit, Shanghai", self.llms)
-        self.assertIn("5th TBI Outstanding Brand Innovation Festival", self.llms)
-        self.assertIn("Small, Flexible, Measurable", self.llms)
-        self.assertIn("Small, Beautiful, Agile, Precise", self.llms)
-        self.assertIn("Super Single Product vs. Brand Matrix", self.llms)
-        self.assertIn("ChengDao (成于渠道)", self.llms)
-        self.assertIn("closed-door morning panel", self.llms)
-        self.assertIn("刀法", self.llms)
-        self.assertIn("TBI", self.llms)
-
-
-class BrandAssetsTests(unittest.TestCase):
-    def test_brand_assets_are_local(self):
-        remote = [
-            "https://www.xingqigeo.cn/",
-            "https://whobot.com/",
-            "https://nihaovisit.com/",
-            "https://lioramoon.com/",
-            "allstarpartner.com",
-        ]
-        for token in remote:
-            with self.subTest(token=token):
-                self.assertNotIn(f'src="https://{token}', INDEX)
-                self.assertNotIn(f"src='https://{token}", INDEX)
-
-    def test_each_brand_asset_file_matches_spec(self):
-        expectations = [
-            ("xingqi-geo", 64, 64, "png"),
-            ("liora-moon", 512, 512, "png"),
-            ("all-star-partner", 300, 300, "png"),
-        ]
-        for name, width, height, ext in expectations:
-            with self.subTest(brand=name):
-                path = ROOT / "assets" / "logos" / f"{name}.{ext}"
-                self.assertTrue(path.is_file(), f"missing {path}")
-                with path.open("rb") as stream:
-                    self.assertEqual(stream.read(8), b"\x89PNG\r\n\x1a\n")
-                    stream.seek(16)
-                    self.assertEqual(struct.unpack(">II", stream.read(8)), (width, height))
-        for name in ("whobot", "nihaovisit"):
-            with self.subTest(brand=name):
-                path = ROOT / "assets" / "logos" / f"{name}.svg"
-                self.assertTrue(path.is_file(), f"missing {path}")
-                self.assertIn("<svg", path.read_text(encoding="utf-8"))
-
-    def test_logo_wall_groups(self):
-        expected_brands = [
-            "assets/logos/xiaomi.svg",
-            "assets/logos/xpeng.svg",
-            "assets/logos/volkswagen.svg",
-            "assets/logos/dongfeng-nissan.png",
-            "assets/logos/saic.png",
-            "assets/logos/yhetea.png",
-            "assets/logos/kawangke.png",
-            "assets/logos/kuafu-zhachua.png",
-            "assets/logos/zhengxin-jipai.png",
-            "assets/logos/sanjin-tangbao.png",
-            "assets/logos/xiaomi.svg",
-            "assets/logos/ginoble.png",
-            "assets/logos/dongfeng-nissan.png",
-            "assets/logos/saic.png",
-            "assets/logos/xiaotiancai.svg",
-            "assets/logos/hao-xianglai.png",
-            "assets/logos/aldi.png",
-        ]
-        for path in expected_brands:
-            with self.subTest(asset=path):
-                self.assertIn(f'src="{path}"', INDEX)
-        self.assertIn("万益蓝 WITSBB", INDEX)
-        self.assertIn("小象超市", INDEX)
-        self.assertNotIn("医药", INDEX)
-
-
-    def test_venture_sub_brand_uses_local_icon(self):
-        for path, zh in [
-            ("assets/logos/xingqi-geo.png", "微盟星启 GEO"),
-            ("assets/logos/whobot.svg", "呼波特 WhoBot"),
-            ("assets/logos/nihaovisit.svg", "NihaoVisit"),
-            ("assets/logos/liora-moon.png", "Liora Moon"),
-            ("assets/logos/all-star-partner.png", "聚星动力 FanTown"),
-        ]:
-            with self.subTest(brand=zh):
-                # New structure: <article class="other-venture-card"><span class="other-venture-icon"><img src="...">
-                pattern = (
-                    r'<article class="other-venture-card">'
-                    r'\s*<span class="other-venture-icon">'
-                    r'\s*<img src="' + re.escape(path) + r'"'
-                )
-                self.assertRegex(INDEX, pattern)
-                self.assertIn(zh, INDEX)
-
-    def test_venture_sub_brand_styles(self):
-        self.assertIn(".other-venture-card {", CSS)
-        self.assertIn(".other-venture-icon {", CSS)
-        self.assertIn(".other-venture-icon img {", CSS)
-
-    def test_balanced_compact_density_values(self):
-        self.assertIn("--section-padding: 68px;", CSS)
-        self.assertRegex(CSS, r"\.hero\s*\{[^}]*padding-top:\s*120px;\s*padding-bottom:\s*72px;")
-        self.assertIn("margin-bottom: 32px;", CSS)
-        self.assertIn("line-height: 1.7;", CSS)
-        self.assertRegex(
-            CSS,
-            r"\.skills-grid,\s*\.ventures-grid,\s*\.books-grid,\s*\.track-grid\s*\{[^}]*gap:\s*20px;",
+    def test_qr_modal_is_reachable(self):
+        """The modal used to be dead code: the JS listened for a trigger that
+        did not exist anywhere in the markup."""
+        self.assertTrue(
+            find_all(DOC, attr="data-qr-trigger"),
+            "no element carries data-qr-trigger, so the QR modal cannot open",
         )
-        self.assertIn("margin: 0 auto 28px;", CSS)
-        self.assertRegex(CSS, r"\.about-content p\s*\{[^}]*line-height:\s*1\.75;")
-        self.assertRegex(CSS, r"\.timeline-item\s*\{[^}]*padding-bottom:\s*28px;")
-        self.assertRegex(CSS, r"\.track-record\s*\{[^}]*margin-top:\s*40px;\s*padding-top:\s*32px;")
-        self.assertRegex(CSS, r"\.logo-wall\s*\{[^}]*gap:\s*24px;")
-        self.assertRegex(CSS, r"\.speaking-item\s*\{[^}]*padding:\s*18px 0;")
-        self.assertRegex(CSS, r"\.contact-qr\s*\{[^}]*margin:\s*28px auto 0;")
+        self.assertTrue(find_all(DOC, attr="data-qr-close"))
+        modal = first(DOC, tag="div", cls="qr-modal")
+        self.assertIsNotNone(modal)
+        self.assertIn("hidden", modal["attrs"], "modal should start hidden")
+        self.assertEqual(modal["attrs"].get("role"), "dialog")
 
 
-
-
-class ProductPageTests(unittest.TestCase):
-    """Verifies the compact 1-screen product data sheet within #ventures."""
-
-    def setUp(self):
-        self.index = INDEX
-        self.llms = LLMS
-        self.css = CSS
-
-    # --- Section header ---
-    def test_product_section_present(self):
-        self.assertIn('class="section product-section product-section--compact"', self.index)
-        self.assertIn('id="manufacturing-ai"', self.index)
-        self.assertIn("制造业 AI 落地", self.index)
-        self.assertIn("WorkBuddy 官方代理", self.index)
-
-    # --- 1-screen data sheet has all 7 rows ---
-    def test_all_three_blocks_present(self):
-        for block in (
-            "product-hero-value",
-            "product-standard",
-            "product-integration",
-        ):
-            with self.subTest(block=block):
-                self.assertIn(f'class="{block}"', self.index)
-
-    def test_each_block_has_a_heading(self):
-        for heading in ("标准产品", "如何接入"):
-            with self.subTest(heading=heading):
-                self.assertIn(heading, self.index)
-
-    # --- 3 soul stats (now BIG hero numbers) ---
-    def test_three_soul_stats_present(self):
-        self.assertEqual(self.index.count("class=\"product-hero-num\""), 3)
-        self.assertIn("2-4", self.index)
-        self.assertIn("15分", self.index)
-        self.assertIn("3月<span class=\"product-arrow-keep\">→</span>3天", self.index)
-
-    # --- 2 Skills are the standard product ---
-    def test_two_skill_cards_present(self):
-        self.assertEqual(self.index.count("class=\"product-skill-card\""), 2)
-        self.assertIn("智能取数 Skill", self.index)
-        self.assertIn("知识库 Skill", self.index)
-        # Each has icon + heading + description + 3 bullet points
-        self.assertIn("Data Retrieval Skill", self.index)
-        self.assertIn("Knowledge Base Skill", self.index)
-
-    def test_skill_bullets_cover_what_they_do(self):
-        # Data Retrieval — natural language → data query
-        self.assertIn("只读打通现有系统", self.index)
-        # Knowledge Base — digitize know-how
-        self.assertIn("老师傅经验数字化沉淀", self.index)
-
-    # --- Integration flow (L1 → 2 Skills → L2) ---
-    def test_integration_flow(self):
-        self.assertIn("class=\"product-integration-flow\"", self.index)
-        # 3 steps
-        self.assertIn("class=\"product-int-step\"", self.index)
-        # Middle step is the accent (the 2 Skills)
-        self.assertIn("class=\"product-int-step product-int-step--accent\"", self.index)
-        self.assertIn("L1", self.index)
-        self.assertIn("L2", self.index)
-
-    # --- Try block removed per user direction (no CTA in product section) ---
-    def test_try_block_removed(self):
-        self.assertNotIn("class=\"product-try\"", self.index)
-        self.assertNotIn("30 分钟场景诊断", self.index)
-
-    # --- Old 7-row + detail-block structures gone ---
-    def test_old_seven_row_structures_absent(self):
-        for old in (
-            "product-row--pain",
-            "product-row--arch",
-            "product-row--cases",
-            "product-row--service",
-            "product-row--method",
-            "product-row--roadmap",
-            "product-row--cta",
-            "product-arch-stack",
-            "product-roadmap-bar",
-            "product-roadmap-milestone",
-            "product-service-icons",
-            "product-method-step",
-            "focus-pain",
-            "product-compact-cta",
-            "product-case-mini",  # removed with proof block
-            "product-case-from",
-            "product-case-to",
-        ):
-            with self.subTest(old=old):
-                self.assertNotIn(old, self.index)
-
-    # --- Pain row was removed (not in user's "product + value" list) ---
-    def test_no_old_pain_class(self):
-        self.assertNotIn("product-row--pain", self.index)
-
-    # --- Architecture is now a compact integration flow (3 steps, not 4 layers) ---
-    def test_integration_flow_replaces_arch(self):
-        self.assertIn("class=\"product-integration-flow\"", self.index)
-        # L1, L2, "2 Skills" all appear in the integration flow
-        self.assertIn(">L1<", self.index)
-        self.assertIn(">L2<", self.index)
-        # The two Skills are the centerpiece of the integration flow
-        self.assertIn("product-int-step--accent", self.index)
-        # Content from the old arch is still in the integration
-        self.assertIn("CRM / ERP / MES / WMS", self.index)
-        self.assertIn("智能取数 + 知识库", self.index)
-
-    # --- Cases still present (reused) ---
-    def test_no_more_duplicate_case_cards(self):
-        # Cases were duplicate with hero numbers — section removed
-        self.assertNotIn("product-proof", self.index)
-        self.assertNotIn("真实效果", self.index)
-        self.assertEqual(self.index.count("class=\"product-case-mini\""), 0)
-
-    # --- Service / Method / Roadmap rows were removed (process, not product) ---
-    def test_process_rows_removed(self):
-        for removed in (
-            "product-service-icon-item",
-            "product-method-step",
-            "product-roadmap-milestone",
-        ):
-            with self.subTest(removed=removed):
-                self.assertNotIn(removed, self.index)
-
-    # --- Other ventures still present ---
-    def test_other_ventures_secondary(self):
-        self.assertIn('class="other-ventures"', self.index)
-        for sub in ("微盟星启 GEO", "呼波特 WhoBot", "NihaoVisit", "Liora Moon", "聚星动力 FanTown"):
-            with self.subTest(sub=sub):
-                self.assertIn(sub, self.index)
-        self.assertEqual(self.index.count("class=\"other-venture-card\""), 5)
-
-    # --- Old 7-stage structure is gone ---
-    def test_old_seven_stage_structure_absent(self):
-        # The old detailed stage classes
-        for old in (
-            "product-stage--hook",
-            "product-stage--pain",
-            "product-stage--solution",
-            "product-stage--service",
-            "product-stage--metrics",
-            "product-stage--method-cases",
-            "product-stage--roadmap-cta",
-            "product-stage-title",
-            "pain-quote",
-        ):
-            with self.subTest(old=old):
-                self.assertNotIn(old, self.index)
-
-    # --- CSS for compact layout ---
-    def test_compact_css_defined(self):
-        for selector in (
-            ".product-section--compact {",
-            ".product-compact {",
-            ".product-compact-title {",
-            ".product-compact-stat strong {",
-            ".product-row {",
-            ".product-row-tag {",
-            ".product-chip {",
-            ".product-case-mini {",
-            ".product-compact-cta {",
-        ):
-            with self.subTest(selector=selector):
-                self.assertIn(selector, self.css)
-
-    # --- llms + meta ---
-    def test_meta_descriptions_advertise_manufacturing_focus(self):
-        for selector in (
-            'name="description"',
-            'property="og:description"',
-            'name="twitter:description"',
-        ):
-            with self.subTest(selector=selector):
-                pattern = (
-                    rf'<meta {re.escape(selector)} content="[^"]*WorkBuddy 官方代理、制造业 AI 落地服务商'
-                )
-                self.assertRegex(self.index, pattern)
-
-    def test_json_ld_lists_manufacturing_focus(self):
-        self.assertIn("WorkBuddy", self.index)
-        self.assertIn("Manufacturing AI Implementation", self.index)
-        self.assertIn("Smart Manufacturing", self.index)
-        self.assertIn("FDE Methodology", self.index)
-
-    def test_llms_documents_manufacturing_focus(self):
-        self.assertIn("## Manufacturing AI focus", self.llms)
-        for term in ("WorkBuddy", "Data Retrieval Skill", "Knowledge Base Skill", "4-stage adoption roadmap"):
-            with self.subTest(term=term):
-                self.assertIn(term, self.llms)
-        self.assertIn("Last updated: 2026-09-05", self.llms)
+if __name__ == "__main__":
+    unittest.main()

@@ -1,46 +1,53 @@
 # Shi Ke (施可)
 
-> Serial entrepreneur, founder of Dropleap (水滴跃动), and enterprise AI practitioner. 16 years across software engineering, internet products, entrepreneurship, and business operations; now focused on enterprise AI Agents, GEO, and application engineering.
+> Serial entrepreneur, founder of Dropleap (水滴跃动), authorized WorkBuddy agent, and manufacturing AI implementation provider in Suzhou. 16 years across software engineering, internet products, entrepreneurship, and business operations.
 
 施可 (Shi Ke) is a serial entrepreneur with an MSc in Software Engineering from the University of Science and Technology of China (USTC). His career path spans software engineer → engineering manager → product lead → founder → COO → enterprise AI founder.
 
 ## Identity
 
 - **Name**: 施可 (Shi Ke)
-- **Role**: Founder, Dropleap (水滴跃动)
+- **Role**: Founder, Dropleap (水滴跃动), Suzhou
 - **Positioning**: Serial Entrepreneur / Enterprise AI Practitioner
+- **Authorized agent**: WorkBuddy (manufacturing), 微盟星启 GEO, 呼波特 WhoBot
 - **Previous**: COO, Linhuiba (2022–2026)
 - **Education**: MSc in Software Engineering, USTC
 - **Email**: shike@dropleap.cn
 - **Website**: https://shike.github.io/
+- **Company site**: https://dropleap.cn/
 - **GitHub**: https://github.com/shike
 
 ## Current focus
 
-Building Dropleap (水滴跃动), an enterprise AI implementation company focused on AI Agents, GEO, and application engineering. Services span use-case discovery, AI strategy, Agent solution design, engineering delivery, and deployment operations, with an emphasis on reliability, observability, evaluability, and long-term operability in real business environments.
+Building Dropleap (水滴跃动), an enterprise AI implementation company. Services span AI training, data integration, knowledge base systems, and custom AI applications, with an emphasis on reliability, observability, evaluability, and long-term operability in real business environments.
 
-Flagship vertical: manufacturing AI implementation through the WorkBuddy authorized-agent relationship, delivered via a spiral 2–4 week cadence (Diagnose → Deliver → Review → Distill) with a two-person pod (business role + delivery role) embedded on-site.
+Flagship vertical: manufacturing AI implementation through the WorkBuddy authorized-agent relationship.
 
 ## Manufacturing AI focus
 
 - **Identity**: Authorized agent for WorkBuddy in manufacturing. Operating brand: 苏州水滴跃动科技有限公司 (Suzhou Dropleap Technology).
-- **Starting position**: AI reshaping how manufacturing enterprises run operations and management — get AI running inside the customer's factory within 2–4 weeks.
-- **Two flagship Skills** (deploy once, live throughout the contract): Data Retrieval Skill + Knowledge Base Skill.
-- **12-month service rhythm**: two Skills deployed once and live; one in-depth operations diagnostic report (PDF) per month; quarterly on-site team training; AI consulting on call throughout the contract.
-- **Delivery methodology**: spiral cadence — Diagnose → Deliver → Review → Distill. Each round takes 2–4 weeks. A two-person pod (Echo on business, Delta on delivery) embeds on-site. The customer keeps the call to continue, expand, or pause at the end of each round.
-- **Anonymized case snapshots** (reference samples, not commitments):
-  - Industrial parts distributor (~250M RMB revenue, fasteners and seals): quote cycle 3 days → 15 minutes; dead stock down ~25%.
-  - Precision parts factory (~300 staff, automotive and aerospace): new-hire ramp-up 3 months → 3 days; unplanned downtime down ~45%.
-- **4-stage adoption roadmap**: Start (operations & management: Data Retrieval + Knowledge Base) → Grow (front office: AI quoting, sales forecast, churn alert) → Refine (back office: finance, legal, HR) → Advance (production: visual inspection, predictive maintenance, smart scheduling).
-- **Footprint**: 30+ manufacturing enterprises served.
+- **Starting position**: get AI running inside the customer's factory within 2–4 weeks.
+- **The WorkBuddy set of four**: Desktop AI (conversational entry point, installed inside the customer's own environment — data never leaves it), Data Retrieval (connected to ERP / CRM / MES and finance data, computed on one agreed definition), Enterprise Knowledge Base (process standards, work instructions, equipment manuals and policies, with answers carrying the original citation), and Monthly Operations Report (revenue, gross margin, receivables days, inventory and capacity, exported as PDF).
+- **Two core Skills**: Data Retrieval Skill + Knowledge Base Skill. Deployed once and live throughout.
+- **Delivery cadence**: 2–4 weeks to the first scenario running in production with measurable results; delivered on site with the customer's team; phase-gated — the next step is agreed only after the first scenario is accepted.
+- **Training tracks**: Enterprise training (all staff, L1-L4 role tiers, 1-30 days); WorkBuddy training (middle and senior managers, M1-M4 tiers, 2-5 days); FDE engineer training (engineers with 1-10 years of experience, P1-P4 stages, 4-12 weeks, covering full delivery from PoC to production).
+- **Industries served**: smart manufacturing, precision parts, industrial parts distribution, smart warehousing, battery and energy storage, chain restaurants, coffee platforms, home and building materials, logistics tech.
+- **Footprint**: 100+ manufacturing enterprises served.
+
+## Client cases (anonymized)
+
+- **Industrial fastener and sealing distributor** (~RMB 250M annual revenue): connected ERP and customer data; launched AI quoting, an inventory alert dashboard, churn warning and an executive cockpit. Quote cycle 3 days → 15 minutes; slow-moving inventory down 25%; customer churn down 30%. Customer quote: "Quoting speed is our biggest competitive advantage right now." — CEO.
+- **Precision parts maker for automotive and aerospace** (300 staff, ~RMB 180M annual output): connected order, production-line and QC data; launched a process knowledge base, traceability dashboard, predictive maintenance and operations diagnostics. New-hire ramp-up 3 months → 3 days; batch traceability 99.2%; unplanned downtime down 45%. Customer quote: "The master craftsmen's experience is finally captured." — Head of Digitalization.
+
+Client names are anonymized by agreement; figures are results already delivered, not commitments.
 
 ## Career path
 
-- 2026–present — Founder, Dropleap (水滴跃动). Enterprise AI Agents, GEO, application engineering, and end-to-end AI implementation.
-- 2022–2026 — COO, Linhuiba. Led company strategy, cross-functional alignment, and business operations. Built the Location AI site intelligence platform from 0→1, established a joint research center with Zhejiang University, served clients including Xiaomi EV, and advanced new business initiatives from exploration to scaled operations.
-- 2021–2022 — Product Lead, Hellobike Hotel (Hellobike / 哈啰出行). Core BU decision-maker. Built B-side and C-side product systems and membership growth loops.
-- 2016–2021 — Product & Tech Lead, Tongcheng-Elong (HK:0780), International Hotels division.
-- 2015–2016 — Founder, Ball Chief Tribe (苏州踢来踢去网络). Built the venture from 0→1 and raised institutional angel funding from Zihui Ventures.
+- 2026–present — Founder, Dropleap (水滴跃动). Enterprise AI implementation for manufacturing: WorkBuddy authorized-agent delivery on a 2–4 week cadence.
+- 2022–2026 — COO, Linhuiba. Owned key-account operations and a replicable single-store model; built the KA service system from 0→1, served brand clients across automotive, tea and dining, and retail. Built the Location AI site intelligence platform from 0→1 and established a joint research center with Zhejiang University.
+- 2021–2022 — Head of Product, Hellobike Hotel (Hellobike / 哈啰出行). Core BU decision-maker; built B-side and C-side product systems and membership growth loops.
+- 2016–2021 — Head of Product & Head of Technology, Tongcheng-Elong (HK:0780), International Hotels division.
+- 2015–2016 — Founder, Ball Chief Tribe (苏州踢来踢去网络). Built the venture from 0→1 and raised a RMB 3M institutional angel round from Zihui Ventures at a RMB 20M post-money valuation.
 - 2009–2014 — Software Engineer → Tech Manager at NCS (Singtel Group) and Founder International. Delivered enterprise projects including Yum! Brands' franchise development system and completed multiple Singapore implementation assignments.
 
 ## Expertise
@@ -54,23 +61,26 @@ Flagship vertical: manufacturing AI implementation through the WorkBuddy authori
 
 ## Brands served
 
-Xiaomi EV (小米汽车), Xiaomi 3C (小米 3C), XPeng (小鹏), Volkswagen (大众), ASICS (亚瑟士), Yiheetang (益禾堂), KaWangKa (卡旺卡), Xiaotiancai (小天才), imoo, Yifeng Pharmacy (益丰大药房), Jinuo Fu (基诺辅).
+Xiaomi EV (小米汽车), Xiaomi 3C (小米 3C), XPeng (小鹏), Volkswagen (大众), Dongfeng Nissan (东风日产), SAIC (上汽集团), ASICS (亚瑟士), Yiheetang (益禾堂), KaWangKa (卡旺卡), Kuafu Zhachua (夸父炸串), Zhengxin Chicken Steak (正新鸡排), Sanjin Tangbao (三津汤包), Xiaotiancai (小天才), WITSBB (万益蓝), Hao Xiang Lai (好想来), Yifeng Pharmacy (益丰大药房), ALDI (奥乐齐), Elephant Supermarket (小象超市), Ginoble (基诺浦).
 
 ## Ventures & products
 
-- **NihaoVisit** — https://www.nihaovisit.com/ — Practical China travel guides for foreign visitors; structured long-form content covering major China destinations and on-the-ground tips.
-- **Liora Moon** — https://lioramoon.com/ — AI Tarot reading platform for personalized insights, daily cards, and AI reader chat.
-
-## Authorized agent
-
 - **微盟星启 GEO (Weimob Xingqi GEO)** — https://www.xingqigeo.cn/ — Weimob Group's Generative Engine Optimization platform, lifting brand reach and acquisition across AI search engines. Shi Ke is an authorized agent.
 - **呼波特 WhoBot** — https://www.whobot.com/ — LLM-powered 24/7 AI phone agent for outbound calling and customer operations. Shi Ke is an authorized agent.
+- **NihaoVisit** — https://www.nihaovisit.com/ — Practical China travel guides for foreign visitors; structured long-form content covering major China destinations and on-the-ground tips.
+- **Liora Moon** — https://lioramoon.com/ — AI Tarot reading platform for personalized insights, daily cards, and AI reader chat.
+- **FanTown (聚星动力)** — licensed sports and event retail operations, including the 2026 World Cup licensed pop-up store tour.
 
 ## Books
 
 - **AI Coding: Everyone Is a Programmer (《AI Coding：人人都是程序员》)** — https://shike.gitbook.io/ai-coding/ — A practical guide for non-technical builders who want to ship real, payable, and maintainable products with AI.
 - **FDE: Winning and Losing in AI Isn't About the Model (《FDE：AI 的胜负不在于模型》)** — https://shike.gitbook.io/fde-1 — A field guide to taking AI projects from proof of concept through engineering delivery, deployment, and sustained operations.
-- **WorkBuddy: An Enterprise AI Implementation Trilogy (《WorkBuddy:企业 AI 落地三部曲》)** — https://shike.gitbook.io/workbuddy/ — From proof of concept to operable systems.
+- **WorkBuddy: An Enterprise AI Implementation Trilogy (《WorkBuddy：企业 AI 落地三部曲》)** — https://shike.gitbook.io/workbuddy/ — From proof of concept to operable systems.
+
+## Published Agent Skills
+
+- **Site selection due diligence** — 9-dimension × 6-category structured evaluation (location, competitors, foot traffic, customer profile, comparable stores, risk, financials, negotiation, action list) — https://skillhub.cn/skills/user_5256a507/site-intelligence-report
+- **Tarot reading (Rider-Waite)** — full 78-card deck × 18 spreads with Chinese interpretation — https://skillhub.cn/skills/user_5256a507/rider-waite-cn
 
 ## Selected operations case
 
@@ -86,13 +96,14 @@ Xiaomi EV (小米汽车), Xiaomi 3C (小米 3C), XPeng (小鹏), Volkswagen (大
 
 - **Email**: shike@dropleap.cn
 - **GitHub**: https://github.com/shike
+- **Company site**: https://dropleap.cn/
 - **WeChat Official Account**: 施可 (search on WeChat)
 - **Personal WeChat**: scan the QR code on the contact section of the homepage
 
-For collaborations: AI Agent / LLM application engineering, enterprise AI strategy, startup advisory, product methodology, enterprise account management.
+For collaborations: manufacturing AI implementation, enterprise AI training, data integration, knowledge base systems, custom AI applications, AI Agent / LLM application engineering, and enterprise account management.
 
 ## Source
 
 This page: https://shike.github.io/
 Sitemap: https://shike.github.io/sitemap.xml
-Last updated: 2026-09-05
+Last updated: 2026-09-18
