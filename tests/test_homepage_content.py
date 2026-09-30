@@ -401,7 +401,7 @@ class DesignSystemTests(unittest.TestCase):
         )
         self.assertLess(
             len(CSS.splitlines()), 2600,
-            "style.css has grown past its post-rewrite budget",
+            "style.css has grown past its layout budget",
         )
 
     def test_only_two_responsive_breakpoints(self):

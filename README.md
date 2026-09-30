@@ -28,15 +28,14 @@ gradient CTA block, two breakpoints at 1024px and 768px).
 **This stays a personal homepage.** The corporate site is a style reference and a
 source of business evidence (two first-person case cards live in the
 "what I'm working on" section; the two SkillHub skills have their own section),
-not a template: sections are ordered
-personal-first, copy is first-person, and everything beyond that one section
-links out to dropleap.cn. See the amendment in the spec below.
+not a template: sections are ordered personal-first, copy is first-person, and
+everything beyond that one section links out to dropleap.cn.
 
-One deliberate deviation: dropleap.cn's own text colours fail AA (`#77809c` is
-3.92:1 on white; white on `#3370ff` is 4.28:1), so text-bearing roles are one
-step darker here while the hue is preserved. See
-`docs/superpowers/specs/2026-09-18-dropleap-rebrand-design.md` for the full
-rationale and the measured ratios.
+Text-bearing colours are one step darker than dropleap.cn's own palette while
+keeping the hue: as shipped, `#77809c` on white is 3.92:1 and white on `#3370ff`
+is 4.28:1, both below AA. The full system — tokens with measured ratios,
+information architecture, bilingual contract, asset and brand rules — is
+specified in `docs/design.md`.
 
 ## Local Development
 
@@ -69,7 +68,7 @@ python3 -m http.server 8000
 │   ├── logos/               # Brand logo wall + venture marks
 │   └── wechat/              # WeChat QR code
 ├── tests/                   # Contract test suite (stdlib unittest)
-├── docs/superpowers/        # Dated spec + plan documents
+├── docs/design.md           # Design system & content rules (end state)
 ├── .lighthouserc.json       # Lighthouse CI thresholds
 ├── .github/workflows/
 │   └── lighthouse.yml       # PR / push Lighthouse audit
@@ -103,10 +102,9 @@ list of retired claims that must never reappear.
 
 ## Notes
 
-- To refresh the social preview: edit `og-cover.svg`, render it, then convert to
-  JPEG (a JPEG keeps this gradient-plus-text image around 88KB, versus ~470KB as
-  a PNG). `rsvg-convert` is not installed on this machine, so headless Chrome is
-  the working path:
+- To refresh the social preview: edit `og-cover.svg`, render it with headless
+  Chrome, then convert to JPEG (a JPEG keeps this gradient-plus-text image
+  around 88KB, versus ~470KB as a PNG):
   ```sh
   "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless \
     --disable-gpu --hide-scrollbars --force-device-scale-factor=1 \
