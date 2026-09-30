@@ -80,7 +80,13 @@
     });
   }
 
-  if (localStorage.getItem(STORAGE_KEY) === 'en') setLanguage('en');
+  // hreflang/sitemap 对外承诺 ?lang=en；URL 参数优先于 localStorage，命中后持久化。
+  const urlLang = new URLSearchParams(location.search).get('lang');
+  if (urlLang === 'en' || urlLang === 'zh') {
+    setLanguage(urlLang);
+  } else if (localStorage.getItem(STORAGE_KEY) === 'en') {
+    setLanguage('en');
+  }
 
   /* -------------------------------------------------------------- 移动菜单 */
 
@@ -134,7 +140,6 @@
     }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
 
     document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
-    observer.observe(document.getElementById('hero'));
   }
 
   /* ---------------------------------------------------------------- 二维码弹窗 */

@@ -52,7 +52,6 @@ class Doc(HTMLParser):
             "tag": tag,
             "attrs": attrs,
             "children": [],
-            "parent": self.open[-1],
             "text": [],
         }
         self.open[-1]["children"].append(el)
@@ -62,9 +61,6 @@ class Doc(HTMLParser):
         el = self._add(tag, dict(attrs))
         if tag not in VOID:
             self.open.append(el)
-
-    def handle_startendtag(self, tag, attrs):
-        self._add(tag, dict(attrs))
 
     def handle_endtag(self, tag):
         for i in range(len(self.open) - 1, 0, -1):
@@ -166,18 +162,11 @@ TINT = TOKENS.get("soft", "#f6f8fd").strip()
 
 
 def image_size(path):
-    """Return (width, height) for a PNG, JPEG or SVG on disk."""
+    """Return (width, height) for a PNG or JPEG on disk."""
     data = (ROOT / path).read_bytes()
     if data[:8] == b"\x89PNG\r\n\x1a\n":
         w, h = struct.unpack(">II", data[16:24])
         return w, h
-    if b"<svg" in data[:400]:
-        head = data[:400].decode("utf-8", "replace")
-        w = re.search(r'\bwidth="(\d+)"', head)
-        h = re.search(r'\bheight="(\d+)"', head)
-        if w and h:
-            return int(w.group(1)), int(h.group(1))
-        raise AssertionError(f"SVG without explicit dimensions: {path}")
     i = 2
     while i < len(data) - 9:
         if data[i] != 0xFF:
@@ -342,6 +331,12 @@ class BilingualTests(unittest.TestCase):
         )
         self.assertIn("EN_META", JS)
 
+    def test_lang_url_param_is_honoured(self):
+        """hreflang and sitemap.xml advertise ?lang=en — the JS must honour it,
+        otherwise those URLs silently render Chinese."""
+        self.assertIn("URLSearchParams", JS, "js/main.js must read the lang param")
+        self.assertIn("'lang'", JS)
+
 
 # --------------------------------------------------------- 3. design system
 
@@ -431,6 +426,18 @@ class DesignSystemTests(unittest.TestCase):
             ".arch-layer",
         ):
             self.assertNotIn(dead, CSS, f"dead selector {dead} still in style.css")
+
+    def test_deleted_component_classes_are_absent_from_markup(self):
+        """CSS rules for .btn-line / .speaking-hero were deleted as dead code.
+        The deletion is only a no-op while their classes stay out of the markup —
+        pin that premise so a future re-addition of the markup forces the CSS
+        back first."""
+        for cls in ("btn-line", "speaking-hero"):
+            self.assertNotIn(
+                cls, INDEX_SRC,
+                f"{cls} was removed from style.css as dead; restore its CSS "
+                "before using it in markup",
+            )
 
 
 # ---------------------------------------------------------- 4. machine layer

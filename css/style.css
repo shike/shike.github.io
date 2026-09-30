@@ -151,24 +151,15 @@ a:hover {
   color: var(--blue-strong);
 }
 
-/* 结构化链接恢复无下划线（由各组件显式声明） */
+/* 结构化链接（导航、按钮、卡片链接）不带下划线；正文内联链接保留全局下划线 */
 .nav-link,
 .nav-logo,
 .btn-primary,
 .btn-ghost,
 .btn-white,
-.btn-line,
-.book-link,
-.skill-link,
 .foot a,
-.case a,
 .cta-list a {
   text-decoration: none;
-}
-
-.book-link,
-.skill-link {
-  text-decoration: underline;
 }
 
 :focus-visible {
@@ -371,8 +362,7 @@ a:hover {
 /* --------------------------------------------------------------- 6. 按钮 */
 .btn-primary,
 .btn-ghost,
-.btn-white,
-.btn-line {
+.btn-white {
   display: inline-block;
   border-radius: 12px;
   font-weight: 700;
@@ -422,20 +412,6 @@ a:hover {
 
 .btn-white:hover {
   color: var(--blue-strong);
-  transform: translateY(-2px);
-}
-
-.btn-line {
-  padding: 15px 28px;
-  font-size: 16px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-}
-
-.btn-line:hover {
-  color: var(--white);
-  border-color: var(--white);
   transform: translateY(-2px);
 }
 
@@ -824,7 +800,7 @@ a:hover {
   color: var(--blue-strong);
 }
 
-/* ------------------------------------------------------ 13. Agent Skills */
+/* ------------------------------------------------------ 11. Agent Skills */
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -935,7 +911,7 @@ a:hover {
   color: var(--blue-strong);
 }
 
-/* -------------------------------------------------------------- 14. 关于 */
+/* -------------------------------------------------------------- 12. 关于 */
 .about-grid {
   display: grid;
   grid-template-columns: 300px 1fr;
@@ -1014,7 +990,7 @@ a:hover {
   color: var(--mut);
 }
 
-/* -------------------------------------------------------------- 15. 履历 */
+/* -------------------------------------------------------------- 13. 履历 */
 .timeline {
   position: relative;
   padding-left: 30px;
@@ -1162,26 +1138,7 @@ a:hover {
   color: var(--mut);
 }
 
-/* -------------------------------------------------------------- 16. 演讲 */
-.speaking-hero {
-  margin-bottom: 40px;
-}
-
-.speaking-hero img {
-  width: 100%;
-  height: auto;
-  border-radius: var(--r-l);
-  box-shadow: var(--sh-2);
-}
-
-.speaking-hero figcaption {
-  margin-top: 14px;
-  font-size: 13px;
-  letter-spacing: 0.2px;
-  color: var(--mut);
-  text-align: center;
-}
-
+/* -------------------------------------------------------------- 14. 演讲 */
 .speaking-list {
   display: flex;
   flex-direction: column;
@@ -1202,7 +1159,7 @@ a:hover {
   color: var(--mut);
 }
 
-/* --------------------------------------------------------- 17. 其他业务线 */
+/* --------------------------------------------------------- 15. 其他业务线 */
 .other-ventures-lede {
   margin-bottom: 28px;
   font-size: 15px;
@@ -1259,7 +1216,7 @@ a:hover {
   color: var(--mut);
 }
 
-/* --------------------------------------------------------- 18. 联系与页脚 */
+/* --------------------------------------------------------- 16. 联系与页脚 */
 .cta {
   position: relative;
   overflow: hidden;
@@ -1417,7 +1374,7 @@ a:hover {
   border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-/* -------------------------------------------------------------- 19. 弹窗 */
+/* -------------------------------------------------------------- 17. 弹窗 */
 .qr-modal[hidden] {
   display: none;
 }
@@ -1491,7 +1448,7 @@ a:hover {
   background: var(--blue-soft);
 }
 
-/* -------------------------------------------------------------- 20. 动效 */
+/* -------------------------------------------------------------- 18. 动效 */
 @keyframes pulse {
   0%,
   100% {
@@ -1519,7 +1476,7 @@ a:hover {
   }
 }
 
-/* ------------------------------------------------------ 21. 响应式 1024px */
+/* ------------------------------------------------------ 19. 响应式 1024px */
 @media (max-width: 1024px) {
   .hero-main {
     grid-template-columns: 1fr;
@@ -1585,7 +1542,7 @@ a:hover {
   }
 }
 
-/* ------------------------------------------------------- 22. 响应式 768px */
+/* ------------------------------------------------------- 20. 响应式 768px */
 @media (max-width: 768px) {
   :root {
     --gutter: 22px;
@@ -1650,8 +1607,7 @@ a:hover {
 
   .btn-primary,
   .btn-ghost,
-  .btn-white,
-  .btn-line {
+  .btn-white {
     padding: 15px 24px;
     font-size: 16px;
   }
@@ -1692,10 +1648,6 @@ a:hover {
 
   .about-stats {
     flex-direction: column;
-  }
-
-  .speaking-hero img {
-    border-radius: var(--r);
   }
 
   .cta {

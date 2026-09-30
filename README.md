@@ -26,8 +26,9 @@ headings, 14/20px radii, three-layer soft shadows, dashed dividers, a single dar
 gradient CTA block, two breakpoints at 1024px and 768px).
 
 **This stays a personal homepage.** The corporate site is a style reference and a
-source of business evidence (two first-person case cards + two Skill cards live
-in one "what I'm working on" section), not a template: sections are ordered
+source of business evidence (two first-person case cards live in the
+"what I'm working on" section; the two SkillHub skills have their own section),
+not a template: sections are ordered
 personal-first, copy is first-person, and everything beyond that one section
 links out to dropleap.cn. See the amendment in the spec below.
 
@@ -55,9 +56,12 @@ python3 -m http.server 8000
 ├── js/main.js               # i18n, nav highlight, mobile menu, QR modal
 ├── og-cover.jpg             # 1200x630 social preview
 ├── og-cover.svg             # SVG source for the preview
+├── apple-touch-icon.png     # 180x180 iOS home-screen icon
 ├── sitemap.xml              # Search engine sitemap
 ├── robots.txt               # Crawler policy (incl. AI bots)
 ├── llms.txt                 # AI-readable summary for LLM crawlers
+├── .editorconfig
+├── .gitignore
 ├── assets/
 │   ├── hero/                # Hero photograph (Shi Ke on stage)
 │   ├── cases/               # Client case photographs
@@ -78,8 +82,9 @@ Pushed to `main`; GitHub Pages serves automatically from the root.
 
 ## Quality Gates
 
-`.github/workflows/lighthouse.yml` runs Lighthouse CI against the built site on
-push and pull request. Thresholds in `.lighthouserc.json`:
+`.github/workflows/lighthouse.yml` runs two jobs on push and pull request: the
+contract test suite, then Lighthouse CI against the built site. Thresholds in
+`.lighthouserc.json`:
 
 - Accessibility ≥ 0.95 (error)
 - SEO ≥ 0.95 (error)
@@ -111,7 +116,8 @@ list of retired claims that must never reappear.
   ```
 - To add a new translatable string: put the Chinese in the element's text and add
   `data-en` with the English. Images take `data-en-alt`, ARIA labels take
-  `data-en-aria`.
+  `data-en-aria`. Language resolves as: `?lang=` URL param (persisted) →
+  `localStorage` → Chinese default.
 - **`data-en` must only sit on leaf elements.** `js/main.js` replaces
   `textContent`, so tagging an element that contains markup deletes its children
   permanently — the suite asserts this never happens.

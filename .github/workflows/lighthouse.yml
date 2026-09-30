@@ -1,4 +1,4 @@
-name: Lighthouse CI
+name: CI
 
 on:
   push:
@@ -7,7 +7,19 @@ on:
     branches: [main]
 
 jobs:
+  tests:
+    name: Contract tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run contract suite
+        run: python3 -m unittest discover -s tests -v
+
   lighthouse:
+    name: Lighthouse CI
+    needs: tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -16,7 +28,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Run Lighthouse CI
         uses: treosh/lighthouse-ci-action@v11
