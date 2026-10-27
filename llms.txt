@@ -30,9 +30,16 @@ Flagship vertical: manufacturing AI implementation through the WorkBuddy authori
 - **The WorkBuddy set of four**: Desktop AI (conversational entry point, installed inside the customer's own environment — data never leaves it), Data Retrieval (connected to ERP / CRM / MES and finance data, computed on one agreed definition), Enterprise Knowledge Base (process standards, work instructions, equipment manuals and policies, with answers carrying the original citation), and Monthly Operations Report (revenue, gross margin, receivables days, inventory and capacity, exported as PDF).
 - **Two core Skills**: Data Retrieval Skill + Knowledge Base Skill. Deployed once and live throughout.
 - **Delivery cadence**: 2–4 weeks to the first scenario running in production with measurable results; delivered on site with the customer's team; phase-gated — the next step is agreed only after the first scenario is accepted.
-- **Training tracks**: Enterprise training (all staff, L1-L4 role tiers, 1-30 days); WorkBuddy training (middle and senior managers, M1-M4 tiers, 2-5 days); FDE engineer training (engineers with 1-10 years of experience, P1-P4 stages, 4-12 weeks, covering full delivery from PoC to production).
 - **Industries served**: smart manufacturing, precision parts, industrial parts distribution, smart warehousing, battery and energy storage, chain restaurants, coffee platforms, home and building materials, logistics tech.
 - **Footprint**: 100+ manufacturing enterprises served.
+
+## Training
+
+Shi Ke teaches the classes himself; the three books are the knowledge base. Details and sign-up: https://dropleap.cn/training/
+
+- **FDE Bootcamp (FDE 实战营)** — flagship public class: 2 days on site in Suzhou, small group, no coding background required. Participants build four working things on site: their own Skill, a private knowledge base, a deployable enterprise knowledge base, and a content-production Agent.
+- **Custom in-house AI training (企业定制内训)** — https://dropleap.cn/training/corporate/ — taught at the customer's site, exercises run on the company's real business material, duration and group size tailored. Streams: company-wide role-tiered AI upskilling; single-team deep-dives (sales, quality, warehousing, finance); a delivery-readiness primer that dovetails into on-site FDE delivery. Graduates leave with a department knowledge base, job Skills and business Agents they built themselves.
+- **Other formats**: manufacturing owner class (1 day on site, judgment over code); WorkBuddy enterprise training (2–5 days, official agent); tiered enterprise AI training for all staff (L1–L4 role tiers, 1–30 days); FDE engineer program (P1–P4 stages, 4–12 weeks, engineers with 1–10 years of experience, covering full delivery from PoC to production); FDE advanced class (in preparation).
 
 ## Client cases (anonymized)
 
@@ -106,4 +113,4 @@ For collaborations: manufacturing AI implementation, enterprise AI training, dat
 
 This page: https://shike.github.io/
 Sitemap: https://shike.github.io/sitemap.xml
-Last updated: 2026-09-18
+Last updated: 2026-10-27

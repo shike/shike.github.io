@@ -124,7 +124,7 @@
         "name": "施可 · Shi Ke",
         "url": "https://shike.github.io/",
         "inLanguage": "zh-CN",
-        "dateModified": "2026-09-18",
+        "dateModified": "2026-10-27",
         "isPartOf": { "@id": "https://shike.github.io/#website" },
         "mainEntity": { "@id": "https://shike.github.io/#person" },
         "about": { "@id": "https://shike.github.io/#person" }
@@ -182,6 +182,14 @@
               "@type": "Answer",
               "text": "发送邮件至 shike@dropleap.cn，或通过网站上的微信二维码添加个人微信。也可以访问公司站点 https://dropleap.cn/ 了解交付案例与产品细节。"
             }
+          },
+          {
+            "@type": "Question",
+            "name": "施可提供哪些 AI 培训？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "施可亲自授课，课程以他的三本著作为知识底座，分两种形式：FDE 实战营（两天苏州线下小班，现场做出自己的 Skill、私人知识库、企业知识库与内容生产 Agent）和企业定制内训（讲师到企业现场授课，练习用真实业务素材，结营产出部门知识库与岗位 Skill）。另有制造业老板班、WorkBuddy 企业培训、FDE 工程师系统班等班型，详见 https://dropleap.cn/training/。"
+            }
           }
         ]
       },
@@ -217,6 +225,28 @@
         "url": "https://shike.gitbook.io/workbuddy/",
         "image": "https://shike.github.io/assets/books/workbuddy-cover.jpg",
         "author": { "@id": "https://shike.github.io/#person" }
+      },
+      {
+        "@type": "Course",
+        "@id": "https://shike.github.io/#course-fde-bootcamp",
+        "name": "FDE 实战营",
+        "alternateName": "FDE Bootcamp",
+        "description": "两天苏州线下小班，现场做出四个能用的东西：自己的 Skill、私人知识库、企业知识库与内容生产 Agent。",
+        "inLanguage": "zh-CN",
+        "url": "https://dropleap.cn/training/",
+        "instructor": { "@id": "https://shike.github.io/#person" },
+        "provider": { "@id": "https://shike.github.io/#organization" }
+      },
+      {
+        "@type": "Course",
+        "@id": "https://shike.github.io/#course-corporate",
+        "name": "企业定制内训",
+        "alternateName": "Custom in-house AI training",
+        "description": "讲师到企业现场授课，练习用真实业务素材，结营产出部门知识库、岗位 Skill 与业务 Agent。",
+        "inLanguage": "zh-CN",
+        "url": "https://dropleap.cn/training/corporate/",
+        "instructor": { "@id": "https://shike.github.io/#person" },
+        "provider": { "@id": "https://shike.github.io/#organization" }
       }
     ]
   }
@@ -232,6 +262,7 @@
         <li><a class="nav-link" href="#about" data-en="About">关于</a></li>
         <li><a class="nav-link" href="#work" data-en="Work">业务</a></li>
         <li><a class="nav-link" href="#books" data-en="Books">著作</a></li>
+        <li><a class="nav-link" href="#training" data-en="Training">培训</a></li>
         <li><a class="nav-link" href="#experience" data-en="Experience">履历</a></li>
         <li><a class="nav-link" href="#speaking" data-en="Speaking">演讲</a></li>
         <li><a class="nav-link" href="#contact" data-en="Contact">联系</a></li>
@@ -256,7 +287,7 @@
           <h1 class="hero-name">施可</h1>
           <p class="hero-title" data-en="Serial Entrepreneur / Founder of Dropleap / Enterprise AI Practitioner">连续创业者 / 水滴跃动 Dropleap 创始人 / 企业级 AI 实践者</p>
           <p class="hero-value" data-en="Focused on one thing now: making AI actually run inside factories.">现在专注一件事：让 AI 在制造业真正跑起来。</p>
-          <p class="hero-desc" data-en="16 years across software engineering, product and business operations. Now focused on enterprise AI Agents, GEO and manufacturing AI implementation — turning new technology into deliverable, operable business capability.">16 年横跨软件工程、产品创新与商业经营，持续推动从 0 到 1 的产品构建与组织实践。现聚焦企业级 AI Agent、GEO 与制造业 AI 落地，将新技术转化为可交付、可运营、可持续迭代的业务能力。</p>
+          <p class="hero-desc" data-en="16 years across software engineering, product and business operations. Now focused on enterprise AI Agents, GEO and manufacturing AI implementation — turning new technology into deliverable, operable business capability, and turning frontline delivery methods into training courses so teams can run with AI themselves.">16 年横跨软件工程、产品创新与商业经营，持续推动从 0 到 1 的产品构建与组织实践。现聚焦企业级 AI Agent、GEO 与制造业 AI 落地，将新技术转化为可交付、可运营、可持续迭代的业务能力，并把一线交付方法开成培训课程，让团队能自己用起来。</p>
           <div class="hero-btns">
             <a class="btn-primary" href="#work" data-en="What I'm building">看我在做的事</a>
             <a class="btn-ghost" href="#contact" data-en="Get in touch">联系我</a>
@@ -296,7 +327,7 @@
             <p data-en="He built his first venture from zero to one as a full-stack founder — “Ball Chief Tribe” raised a RMB 3M angel round from Zihui Ventures in January 2016 at a RMB 20M post-money valuation. He then spent five years at Tongcheng-Elong in product and technology leadership, followed by product leadership at Hellobike Hotels, and later served as COO of Linhuiba (2022-2026), responsible for key-account operations and a replicable single-store model.">首次创业从 0 到 1 全栈操盘，「球长部落」于 2016 年 1 月获紫辉创投 300 万天使轮投资，估值 2000 万。此后在同程艺龙负责产品与技术工作五年，在哈啰酒店担任产品负责人，并于 2022-2026 年任邻汇吧 COO，负责 KA 大客户经营体系与可复制单店模型。</p>
             <p data-en="In 2026 he founded Dropleap, an enterprise AI implementation company, taking the position that whether an AI project succeeds is decided in deployment rather than in the model. The work emphasizes reliability, observability, evaluability and long-term operability in real business environments.">2026 年创立水滴跃动，进入企业级 AI 落地领域，判断 AI 项目的成败在于部署而非模型本身，强调可靠性、可观测性、可评估性与持续运营能力在真实业务环境中的落地。</p>
             <p data-en="Beyond delivery, he works on generative engine optimization (GEO) — not merely content distribution or keyword optimization, but making a company's capability machine-readable and citable by AI systems. He is the author of the WorkBuddy trilogy, AI Coding: Everyone Is a Programmer, and FDE: Winning and Losing in AI Isn't About the Model.">在交付之外，也研究生成式引擎优化（GEO）——GEO 不只是内容投放或关键词优化，而是让企业的能力被 AI 系统可读、可引用。著有《WorkBuddy 三部曲》《AI Coding：人人都是程序员》《FDE：AI 的胜负不在于模型》。</p>
-            <p data-en="This GEO practice is now live: the <a href=&quot;https://fde.dropleap.cn&quot;>China FDE Directory</a> — an evidence-linked, machine-readable directory of China's frontline FDE and AI implementation professionals, built for humans and AI systems alike.">这一实践的落地作品已上线：<a href="https://fde.dropleap.cn">中国 FDE 名录（fde.dropleap.cn）</a>——收录中国一线 FDE 与 AI 落地从业者、实战案例与服务商名录，条条附证据，对人可读、对 AI 可引用。</p>
+            <p><span data-en="This GEO practice is now live: the ">这一实践的落地作品已上线：</span><a href="https://fde.dropleap.cn" target="_blank" rel="noopener noreferrer" data-en="China FDE Directory (fde.dropleap.cn)">中国 FDE 名录（fde.dropleap.cn）</a><span data-en=" — an evidence-linked, machine-readable directory of China's frontline FDE and AI implementation professionals, readable by humans and citable by AI systems alike.">——收录中国一线 FDE 与 AI 落地从业者、实战案例与服务商名录，条条附证据，对人可读、对 AI 可引用。</span></p>
           </div>
         </div>
 
@@ -319,8 +350,8 @@
             <p data-en="Building operating cockpits and metric systems that make decisions traceable and reviewable.">搭建经营驾驶舱与指标体系，让决策可追溯、可复盘。</p>
           </article>
           <article class="comp">
-            <h3 data-en="Public speaking &amp; communication">公开演讲与传播</h3>
-            <p data-en="Summit keynotes, panel moderation, and turning methods into teachable content.">峰会主题演讲、圆桌主持，以及把方法沉淀为可传授的内容。</p>
+            <h3 data-en="Speaking &amp; training">演讲与授课</h3>
+            <p data-en="Summit keynotes and panel moderation — and the methods taught as courses: the FDE Bootcamp and custom in-house training, taught by me.">峰会主题演讲、圆桌主持；也把方法开成课——FDE 实战营与企业定制内训，讲师是我本人。</p>
           </article>
         </div>
       </div>
@@ -495,8 +526,65 @@
       </div>
     </section>
 
-    <!-- ================================================== 5. Agent Skills -->
-    <section class="sec sec--tint" id="agent-skills">
+    <!-- ================================================== 5. 培训 -->
+    <section class="sec sec--tint" id="training">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 data-en="AI training">AI 实战培训</h2>
+          <p class="sec-lede" data-en="Turning frontline delivery methods into courses — no tool reviews, no model tuning; you leave with things that work.">把交付一线的方法开成课——不讲工具评测、不教调模型，结营带走能用的东西。</p>
+        </div>
+
+        <div class="work-intro">
+          <p data-en="The three books are the knowledge base, and I teach every class myself. Two formats: a public in-person class in Suzhou, and in-house training delivered at your company.">三本书是知识底座，讲师是我本人。两种形式：苏州的线下公开课，和走进你公司的定制内训。</p>
+        </div>
+
+        <div class="course-grid">
+
+          <article class="course-card">
+            <span class="course-kind" data-en="Public class · Suzhou">公开课 · 苏州</span>
+            <h3 data-en="FDE Bootcamp">FDE 实战营</h3>
+            <p class="course-desc" data-en="A two-day, in-person small class. No coding background needed — you build four working things on site.">两天线下小班，现场做出四个能用的东西；不需要编程基础。</p>
+            <ul class="course-list">
+              <li data-en="Your own Skill">一个自己的 Skill</li>
+              <li data-en="A private knowledge base">一个私人知识库</li>
+              <li data-en="A deployable enterprise knowledge base">一个能用的企业知识库</li>
+              <li data-en="A content-production Agent">一个内容生产 Agent</li>
+            </ul>
+            <div class="skill-tags">
+              <span class="tag-chip" data-en="2 days on site">2 天线下</span>
+              <span class="tag-chip" data-en="Small class">小班制</span>
+              <span class="tag-chip" data-en="Bring your own laptop">自备电脑</span>
+            </div>
+            <a class="course-link" href="https://dropleap.cn/training/" target="_blank" rel="noopener noreferrer" data-en="Course details &amp; sign-up on dropleap.cn ↗">课程详情与报名在 dropleap.cn ↗</a>
+          </article>
+
+          <article class="course-card">
+            <span class="course-kind" data-en="In-house · at your company">内训 · 到厂</span>
+            <h3 data-en="Custom in-house AI training">企业定制内训</h3>
+            <p class="course-desc" data-en="I bring the class into your company and run the exercises on your real business material — the team leaves with things they built, not lecture notes.">把实战课搬进你的公司，练习题用你的真实业务素材，团队带走的是做出来的东西，不是听课笔记。</p>
+            <ul class="course-list">
+              <li data-en="Company-wide AI upskilling, tiered by role">全员 AI 提效，按岗位分层</li>
+              <li data-en="Team deep-dives: sales, quality, warehousing or finance">部门专项：销售 / 质量 / 仓储 / 财务</li>
+              <li data-en="Delivery-readiness primer that dovetails into on-site delivery">落地预备，可衔接驻场交付</li>
+            </ul>
+            <div class="skill-tags">
+              <span class="tag-chip" data-en="Taught at your site">讲师到企业</span>
+              <span class="tag-chip" data-en="Duration &amp; size tailored">时长人数按需</span>
+            </div>
+            <a class="course-link" href="https://dropleap.cn/training/corporate/" target="_blank" rel="noopener noreferrer" data-en="In-house training details on dropleap.cn ↗">内训详情在 dropleap.cn ↗</a>
+          </article>
+
+        </div>
+
+        <p class="course-more">
+          <span data-en="Also available: manufacturing owner class, WorkBuddy enterprise training, FDE engineer program and more · ">另有制造业老板班、WorkBuddy 企业培训、FDE 工程师系统班等班型 · </span>
+          <a href="https://dropleap.cn/training/" target="_blank" rel="noopener noreferrer" data-en="full course list on dropleap.cn ↗">完整班型见 dropleap.cn/training ↗</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- ================================================== 6. Agent Skills -->
+    <section class="sec" id="agent-skills">
       <div class="wrap">
         <div class="sec-head">
           <h2 data-en="Skills published on WorkBuddy">WorkBuddy 上架的 Skills</h2>
@@ -546,8 +634,8 @@
       </div>
     </section>
 
-    <!-- ================================================== 6. 履历 -->
-    <section class="sec" id="experience">
+    <!-- ================================================== 7. 履历 -->
+    <section class="sec sec--tint" id="experience">
       <div class="wrap">
         <div class="sec-head">
           <h2 data-en="Professional experience">职业经历</h2>
@@ -674,8 +762,8 @@
       </div>
     </section>
 
-    <!-- ================================================== 7. 演讲 -->
-    <section class="sec sec--tint" id="speaking">
+    <!-- ================================================== 8. 演讲 -->
+    <section class="sec" id="speaking">
       <div class="wrap">
         <div class="sec-head">
           <h2 data-en="Industry speaking">行业演讲</h2>
@@ -699,8 +787,8 @@
       </div>
     </section>
 
-    <!-- ================================================== 8. 其他业务线 -->
-    <section class="sec" id="ventures">
+    <!-- ================================================== 9. 其他业务线 -->
+    <section class="sec sec--tint" id="ventures">
       <div class="wrap">
         <div class="sec-head">
           <h2 data-en="Other ventures">其他业务线</h2>
@@ -736,7 +824,7 @@
       </div>
     </section>
 
-    <!-- ================================================== 9. 联系 -->
+    <!-- ================================================== 10. 联系 -->
     <section class="cta" id="contact">
       <div class="cta-in">
         <div class="cta-copy">
@@ -774,6 +862,7 @@
           <li><a href="#about" data-en="About">关于</a></li>
           <li><a href="#experience" data-en="Experience">履历</a></li>
           <li><a href="#books" data-en="Books">著作</a></li>
+          <li><a href="#training" data-en="Training">培训</a></li>
           <li><a href="#speaking" data-en="Speaking">演讲</a></li>
         </ul>
       </div>

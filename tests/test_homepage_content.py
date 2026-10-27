@@ -250,6 +250,15 @@ class StructureTests(unittest.TestCase):
             "nav links must follow the document order of their sections",
         )
 
+    def test_training_section_sits_between_books_and_agent_skills(self):
+        """培训紧随著作：书是方法沉淀，培训是方法传授，叙事顺序即页面顺序。"""
+        ids = [el["attrs"]["id"] for el in self.sections]
+        self.assertIn("training", ids, "the training section is missing")
+        self.assertEqual(
+            ids.index("training"), ids.index("books") + 1,
+            "training must sit directly after books",
+        )
+
 
 # ------------------------------------------------------------- 2. bilingual
 
@@ -501,6 +510,7 @@ class MachineReadableTests(unittest.TestCase):
     def test_llms_documents_every_section_theme(self):
         for heading in (
             "## Manufacturing AI focus",
+            "## Training",
             "## Client cases",
             "## Career path",
             "## Books",
@@ -508,6 +518,27 @@ class MachineReadableTests(unittest.TestCase):
             "## Contact",
         ):
             self.assertIn(heading, LLMS, f"llms.txt is missing {heading}")
+
+    def test_course_facts_match_between_page_jsonld_and_llms(self):
+        courses = [n for n in self.graph.values() if n.get("@type") == "Course"]
+        self.assertEqual(len(courses), 2, "expected the two flagship courses")
+        for course in courses:
+            self.assertIn(course["name"], INDEX_SRC,
+                          f"course {course['name']} missing from index.html")
+            self.assertIn(course["name"], LLMS,
+                          f"course {course['name']} missing from llms.txt")
+            self.assertIn(course["url"], INDEX_SRC,
+                          f"{course['url']} not linked on the page")
+            self.assertIn(course["url"], LLMS,
+                          f"{course['url']} missing from llms.txt")
+            self.assertEqual(
+                course["instructor"]["@id"], "https://shike.github.io/#person",
+                "courses must name Shi Ke as the instructor",
+            )
+            self.assertEqual(
+                course["provider"]["@id"], "https://shike.github.io/#organization",
+                "courses must name Dropleap as the provider",
+            )
 
     def test_all_three_dates_agree_and_are_not_in_the_future(self):
         page = re.search(r'"dateModified":\s*"(\d{4}-\d{2}-\d{2})"', INDEX_SRC).group(1)

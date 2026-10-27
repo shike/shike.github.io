@@ -12,7 +12,7 @@
 
 ## 2. 信息架构
 
-页面共 9 个板块（`index.html`），顺序即导航顺序：
+页面共 10 个板块（`index.html`），顺序即导航顺序：
 
 | # | id | 板块 | 底色 | 导航 |
 |---|---|---|---|---|
@@ -20,13 +20,15 @@
 | 2 | `about` | 关于我（简介 + 数据 + 核心能力） | 白 | 关于 |
 | 3 | `work` | 我在做什么（导语 + 2 Skill 卡 + 2 案例卡） | 浅灰 | 业务 |
 | 4 | `books` | 著作（3 本） | 白 | 著作 |
-| 5 | `agent-skills` | WorkBuddy SkillHub 的 2 个 skill | 浅灰 | — |
-| 6 | `experience` | 履历（时间线 + 战绩 + logo 墙） | 白 | 履历 |
-| 7 | `speaking` | 演讲（3 场） | 浅灰 | 演讲 |
-| 8 | `ventures` | 其他业务线（5 条） | 白 | — |
-| 9 | `contact` | 联系（深色渐变 CTA + 微信二维码） | 深色渐变 | 联系 |
+| 5 | `training` | AI 实战培训（导语 + 2 课程卡 + 其余班型一句话） | 浅灰 | 培训 |
+| 6 | `agent-skills` | WorkBuddy SkillHub 的 2 个 skill | 白 | — |
+| 7 | `experience` | 履历（时间线 + 战绩 + logo 墙） | 浅灰 | 履历 |
+| 8 | `speaking` | 演讲（3 场） | 白 | 演讲 |
+| 9 | `ventures` | 其他业务线（5 条） | 浅灰 | — |
+| 10 | `contact` | 联系（深色渐变 CTA + 微信二维码） | 深色渐变 | 联系 |
 
 - 底色交替用显式 class（`.sec` / `.sec--tint`），不依赖 `nth-of-type` 计数。
+- `training` 板块紧随 `books`（书是方法沉淀，培训是方法传授），由 `test_training_section_sits_between_books_and_agent_skills` 强制；课程事实与班型全表、价格、报名方式只在 dropleap.cn/training，本站不展开第二份。
 - 每个 `section` 有唯一 `id`，导航链接必须指向其中之一——当前板块高亮依赖此契约（`js/main.js` 的 IntersectionObserver；`test_every_nav_link_points_at_a_section`）。
 - 每个板块恰有一个 `h2`，标题层级不跳级（`StructureTests`）。
 - 语言解析顺序：`?lang=` URL 参数（命中后持久化）→ `localStorage` → 中文默认。
@@ -100,13 +102,13 @@ logo 墙的其余品牌标为各品牌官方渠道获取的图形文件，同样
 
 ## 6. 机器可读层（GEO）
 
-- `index.html` 内嵌 JSON-LD `@graph`：Person、Organization、WebSite、ProfilePage、FAQPage（6 问）、Book ×3。节点间用 `@id` 互链（Person `worksFor` Organization，Organization `founder` Person）。
-- `llms.txt` 是面向 LLM 爬虫的英文摘要，比页面更详尽（含培训分层、行业清单）；`robots.txt` 对 AI 爬虫全量放行。
-- 一致性契约：书名、书 URL、案例数字、引语在页面 / JSON-LD / llms.txt 三处同源；`dateModified`、sitemap `lastmod`、llms.txt `Last updated` 三处日期一致且不晚于今天（`MachineReadableTests` 交叉断言）。
+- `index.html` 内嵌 JSON-LD `@graph`：Person、Organization、WebSite、ProfilePage、FAQPage（7 问）、Book ×3、Course ×2（FDE 实战营、企业定制内训，`instructor` 指向 Person）。节点间用 `@id` 互链（Person `worksFor` Organization，Organization `founder` Person）。
+- `llms.txt` 是面向 LLM 爬虫的英文摘要，比页面更详尽（含完整培训体系、行业清单）；`robots.txt` 对 AI 爬虫全量放行。
+- 一致性契约：书名、书 URL、课程名、课程 URL、案例数字、引语在页面 / JSON-LD / llms.txt 三处同源；`dateModified`、sitemap `lastmod`、llms.txt `Last updated` 三处日期一致且不晚于今天（`MachineReadableTests` 交叉断言）。
 
 ## 7. 质量门
 
-- 契约测试：`python3 -m unittest discover -s tests`，42 项，分五组——结构锚点、双语契约、设计系统（含 WCAG 对比度实算）、机器可读层一致性、内容红线。只断言不变量，不冻结营销文案与像素值。
+- 契约测试：`python3 -m unittest discover -s tests`，44 项，分五组——结构锚点、双语契约、设计系统（含 WCAG 对比度实算）、机器可读层一致性、内容红线。只断言不变量，不冻结营销文案与像素值。
 - Lighthouse CI：accessibility ≥0.95、SEO ≥0.95 为 error；performance、best-practices ≥0.9 为 warn；desktop preset。当前基线四项 1.00。
 - CI（`.github/workflows/lighthouse.yml`）：push/PR 先跑契约测试，通过后跑 Lighthouse。
 
