@@ -46,7 +46,7 @@
 | 文字四级 | `--ink` / `--body` / `--mut` / `--faint` | 标题 → 正文 → 次要 → 最弱，双背景 AA 由 `DesignSystemTests` 实算强制 |
 | 底与线 | `--line` / `--soft` / `--dark` | 边框、浅底、深色 CTA |
 
-版式：容器 1200px，gutter 40px（移动 22px）；section 上下 104px（移动 72px）；标题 800 字重配负字距（h1 44px、h2 42px、h3 23px）；正文 16px/1.75；系统字体栈，零 webfont。
+版式：容器 1200px，gutter 40px（移动 22px）；section 上下 76px（移动 56px）；标题 800 字重配负字距（h1 44px、h2 42px、h3 23px）；正文 16px/1.75；系统字体栈，零 webfont。
 
 组件母题：虚线分隔线、22px 编号圆标、脉冲点 eyebrow pill、3:4 书封框、深色渐变 CTA（全站唯一深色区块）、卡片 hover 抬升 2–3px。交互保持最小：不引入轮播、视差、进场动画或第三方组件库。
 
