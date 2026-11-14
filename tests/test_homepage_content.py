@@ -250,13 +250,17 @@ class StructureTests(unittest.TestCase):
             "nav links must follow the document order of their sections",
         )
 
-    def test_training_section_sits_between_books_and_agent_skills(self):
-        """培训紧随著作：书是方法沉淀，培训是方法传授，叙事顺序即页面顺序。"""
+    def test_training_leads_and_delivery_backs_it_up(self):
+        """培训为主、交付为辅：培训紧随关于，交付板块紧随著作。"""
         ids = [el["attrs"]["id"] for el in self.sections]
         self.assertIn("training", ids, "the training section is missing")
         self.assertEqual(
-            ids.index("training"), ids.index("books") + 1,
-            "training must sit directly after books",
+            ids.index("training"), ids.index("about") + 1,
+            "training must sit directly after about",
+        )
+        self.assertEqual(
+            ids.index("work"), ids.index("books") + 1,
+            "the delivery section must sit directly after books",
         )
 
 
@@ -521,7 +525,7 @@ class MachineReadableTests(unittest.TestCase):
 
     def test_course_facts_match_between_page_jsonld_and_llms(self):
         courses = [n for n in self.graph.values() if n.get("@type") == "Course"]
-        self.assertEqual(len(courses), 2, "expected the two flagship courses")
+        self.assertEqual(len(courses), 6, "expected the six JSON-LD courses")
         for course in courses:
             self.assertIn(course["name"], INDEX_SRC,
                           f"course {course['name']} missing from index.html")

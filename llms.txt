@@ -1,14 +1,15 @@
 # Shi Ke (施可)
 
-> Serial entrepreneur, founder of Dropleap (水滴跃动), authorized WorkBuddy agent, and manufacturing AI implementation provider in Suzhou. 16 years across software engineering, internet products, entrepreneurship, and business operations.
+> Enterprise AI implementation trainer (main business) and founder of Dropleap (水滴跃动), authorized WorkBuddy agent, in Suzhou. 16 years across software engineering, internet products, entrepreneurship, and business operations — every course case comes from his own on-site delivery projects.
 
-施可 (Shi Ke) is a serial entrepreneur with an MSc in Software Engineering from the University of Science and Technology of China (USTC). His career path spans software engineer → engineering manager → product lead → founder → COO → enterprise AI founder.
+施可 (Shi Ke) is an enterprise AI implementation trainer with an MSc in Software Engineering from the University of Science and Technology of China (USTC). His career path spans software engineer → engineering manager → product lead → founder → COO → enterprise AI founder and trainer.
 
 ## Identity
 
 - **Name**: 施可 (Shi Ke)
-- **Role**: Founder, Dropleap (水滴跃动), Suzhou
-- **Positioning**: Serial Entrepreneur / Enterprise AI Practitioner
+- **Role**: Enterprise AI implementation trainer; Founder, Dropleap (水滴跃动), Suzhou
+- **Positioning**: Enterprise AI Trainer / Founder of Dropleap
+- **Teaching credentials**: guest lecturer, China Telecom Research Institute; signed instructor, Sanjieke (三节课)
 - **Authorized agent**: WorkBuddy (manufacturing), 微盟星启 GEO, 呼波特 WhoBot
 - **Previous**: COO, Linhuiba (2022–2026)
 - **Education**: MSc in Software Engineering, USTC
@@ -19,9 +20,9 @@
 
 ## Current focus
 
-Building Dropleap (水滴跃动), an enterprise AI implementation company. Services span AI training, data integration, knowledge base systems, and custom AI applications, with an emphasis on reliability, observability, evaluability, and long-term operability in real business environments.
+Training is Shi Ke's main business: four course tracks (FDE Bootcamp, WorkBuddy application, hands-on LLM engineering, business-owner AI literacy) plus custom in-house programs, all taught by himself. Courses are built around real business pain points — moving teams from knowing tools to solving problems with them — and participants leave with working deliverables, not lecture notes.
 
-Flagship vertical: manufacturing AI implementation through the WorkBuddy authorized-agent relationship.
+The delivery arm, Dropleap, runs on-site manufacturing AI implementation as an authorized WorkBuddy agent; those live projects are the case library and exercise material for the courses. Work emphasizes reliability, observability, evaluability, and long-term operability in real business environments.
 
 ## Manufacturing AI focus
 
@@ -35,11 +36,21 @@ Flagship vertical: manufacturing AI implementation through the WorkBuddy authori
 
 ## Training
 
-Shi Ke teaches the classes himself; the three books are the knowledge base. Details and sign-up: https://dropleap.cn/training/
+Training is Shi Ke's main business: he teaches every class himself, and the three books are the knowledge base. Every method taught in class comes from his own on-site delivery projects. Full course list, schedule and sign-up: https://dropleap.cn/training/
 
-- **FDE Bootcamp (FDE 实战营)** — flagship public class: 2 days on site in Suzhou, small group, no coding background required. Participants build four working things on site: their own Skill, a private knowledge base, a deployable enterprise knowledge base, and a content-production Agent.
+Flagship formats:
+
+- **FDE Bootcamp (FDE 实战营)** — flagship public class: 2 days on site in Suzhou, small group, no coding background required. Participants build four working things on site: their own Skill, a private knowledge base, a deployable enterprise knowledge base, and a content-production Agent. First cohort ran Oct 31 – Nov 1, 2026 in Suzhou.
 - **Custom in-house AI training (企业定制内训)** — https://dropleap.cn/training/corporate/ — taught at the customer's site, exercises run on the company's real business material, duration and group size tailored. Streams: company-wide role-tiered AI upskilling; single-team deep-dives (sales, quality, warehousing, finance); a delivery-readiness primer that dovetails into on-site FDE delivery. Graduates leave with a department knowledge base, job Skills and business Agents they built themselves.
-- **Other formats**: manufacturing owner class (1 day on site, judgment over code); WorkBuddy enterprise training (2–5 days, official agent); tiered enterprise AI training for all staff (L1–L4 role tiers, 1–30 days); FDE engineer program (P1–P4 stages, 4–12 weeks, engineers with 1–10 years of experience, covering full delivery from PoC to production); FDE advanced class (in preparation).
+
+Four course tracks (nine open-enrollment and in-house courses):
+
+- **WorkBuddy application track** — from personal use to organizational assets; an all-staff tier and an admin tier, 30–80 people per session. Courses: WorkBuddy 全员应用实战 (6 hours, all staff, management and frontline versions, six deliverables accepted in class); 企业级搭建与管理实战 (2 days, for digitalization leads, IT/WeCom admins and internal coaches).
+- **Technical bootcamp track** — from open-model selection to a defensible private-deployment pipeline, hands-on, one 24G GPU server per team. Courses: 大模型技术基础实战 (3 days: model selection, local deployment, RAG knowledge bases, Agent orchestration); 企业级大模型私有化实战 (model → knowledge base → business system as one pipeline, judged final project).
+- **FDE bootcamp track** — in-person small classes in Suzhou. Courses: FDE-混合编组-一天工作坊 (1 day, mixed teams); FDE 实战营基础班 (2 days, first cohort delivered); FDE Echo 三天工作坊 (3 days).
+- **Business-owner track** — AI literacy for business owners: what changed outside, who made it work, what to do next week. Courses: 企业主 AI 通识课 · 沙龙版 (salon format); 制造业企业主 AI 通识课 (manufacturing edition: trends, verified cases, pitfalls, action roadmap).
+
+Free & community: a "Know FDE" talk (认识 FDE——AI 时代的新兴岗位) and the Suzhou FDE Community salon (苏州 FDE 社区-聊聊 AI 落地).
 
 ## Client cases (anonymized)
 
@@ -59,6 +70,7 @@ Client names are anonymized by agreement; figures are results already delivered,
 
 ## Expertise
 
+- **AI Training & Course Design**: course systems for all-staff, admins, engineers and business owners; deliverable-verified exercises; courseware iterated with frontline delivery
 - **Enterprise AI Implementation**: Use-case discovery, AI strategy, Agent solution design, engineering delivery, deployment operations, reliability, observability, and evaluation
 - **AI Agent / LLM Engineering**: LLM application development, Multi-Agent orchestration, Tool Use and Function Calling, RAG, agent evaluation and observability
 - **Generative Engine Optimization (GEO)**: Brand facts, content structure, authority signals, and continuous evaluation designed for accurate understanding, credible citation, and consistent recommendation by AI search engines
@@ -107,10 +119,10 @@ Xiaomi EV (小米汽车), Xiaomi 3C (小米 3C), XPeng (小鹏), Volkswagen (大
 - **WeChat Official Account**: 施可 (search on WeChat)
 - **Personal WeChat**: scan the QR code on the contact section of the homepage
 
-For collaborations: manufacturing AI implementation, enterprise AI training, data integration, knowledge base systems, custom AI applications, AI Agent / LLM application engineering, and enterprise account management.
+For collaborations: enterprise AI training (in-house and public classes), manufacturing AI implementation, data integration, knowledge base systems, custom AI applications, AI Agent / LLM application engineering, and enterprise account management.
 
 ## Source
 
 This page: https://shike.github.io/
 Sitemap: https://shike.github.io/sitemap.xml
-Last updated: 2026-10-27
+Last updated: 2026-11-14

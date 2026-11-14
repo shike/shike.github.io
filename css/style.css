@@ -870,6 +870,69 @@ a:hover {
   color: var(--mut);
 }
 
+.course-lines {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 28px;
+}
+
+.course-line {
+  padding: 26px 28px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--r-l);
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+}
+
+.course-line:hover {
+  border-color: var(--blue-line);
+  box-shadow: var(--sh-2);
+  transform: translateY(-3px);
+}
+
+.course-line h3 {
+  font-size: 17px;
+}
+
+.course-line-desc {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--mut);
+}
+
+.course-line .skill-tags {
+  margin-top: 16px;
+}
+
+/* 课堂现场照片行（照片入库后启用） */
+.course-photos {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 44px;
+}
+
+.course-photos figure {
+  margin: 0;
+}
+
+.course-photos img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+}
+
+.course-photos figcaption {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--faint);
+}
+
 /* ------------------------------------------------------ 12. Agent Skills */
 .skills-grid {
   display: grid;
@@ -1580,7 +1643,8 @@ a:hover {
 
   .books-grid,
   .other-ventures-grid,
-  .comp-grid {
+  .comp-grid,
+  .course-photos {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -1701,6 +1765,7 @@ a:hover {
   .prod-skills,
   .books-grid,
   .course-grid,
+  .course-lines,
   .other-ventures-grid,
   .comp-grid,
   .skills-grid,

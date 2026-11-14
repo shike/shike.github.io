@@ -4,7 +4,7 @@
 
 ## 1. 站点定位与内容原则
 
-- 站点是**个人主页**：施可（Shi Ke），水滴跃动 Dropleap 创始人。
+- 站点是**个人主页**：施可（Shi Ke），企业级 AI 落地实战讲师、水滴跃动 Dropleap 创始人。叙述主轴为「培训为主、FDE 驻场交付为辅」：课程体系是核心板块，交付板块定位为课堂案例的出处。
 - 视觉系统采用 dropleap.cn 的品牌蓝与企业风；文案保持**第一人称**，个人内容前置。公司站是业务证据的来源，不是内容模板——板块层面的产品与案例细节一律链接到 dropleap.cn，不在本站展开第二份。
 - 口吻分工：公司站保持产品视角，本站保持人的视角。
 - 客户案例中的客户名称匿名，引语仅以角色署名（企业 CEO、数字化负责人）。
@@ -16,11 +16,11 @@
 
 | # | id | 板块 | 底色 | 导航 |
 |---|---|---|---|---|
-| 1 | `hero` | 首屏（个人定位 + 登台照 + 双 CTA） | 浅蓝渐变 | — |
-| 2 | `about` | 关于我（简介 + 数据 + 核心能力） | 白 | 关于 |
-| 3 | `work` | 我在做什么（导语 + 2 Skill 卡 + 2 案例卡） | 浅灰 | 业务 |
-| 4 | `books` | 著作（3 本） | 白 | 著作 |
-| 5 | `training` | AI 实战培训（导语 + 2 课程卡 + 其余班型一句话） | 浅灰 | 培训 |
+| 1 | `hero` | 首屏（讲师定位 + 登台照 + 双 CTA，主 CTA 指向培训） | 浅蓝渐变 | — |
+| 2 | `about` | 关于我（讲师档案 + 数据 + 核心能力） | 白 | 关于 |
+| 3 | `training` | AI 实战培训（导语 + 2 旗舰课程卡 + 四条课程线 + 课堂现场照片行 + 免费内容一句话） | 浅灰 | 培训 |
+| 4 | `books` | 著作（3 本，课程的教材底座） | 白 | 著作 |
+| 5 | `work` | 实战交付（导语 + 2 Skill 卡 + 2 案例卡，课堂案例的出处） | 浅灰 | 交付 |
 | 6 | `agent-skills` | WorkBuddy SkillHub 的 2 个 skill | 白 | — |
 | 7 | `experience` | 履历（时间线 + 战绩 + logo 墙） | 浅灰 | 履历 |
 | 8 | `speaking` | 演讲（3 场） | 白 | 演讲 |
@@ -28,7 +28,7 @@
 | 10 | `contact` | 联系（深色渐变 CTA + 微信二维码） | 深色渐变 | 联系 |
 
 - 底色交替用显式 class（`.sec` / `.sec--tint`），不依赖 `nth-of-type` 计数。
-- `training` 板块紧随 `books`（书是方法沉淀，培训是方法传授），由 `test_training_section_sits_between_books_and_agent_skills` 强制；课程事实与班型全表、价格、报名方式只在 dropleap.cn/training，本站不展开第二份。
+- 叙述顺序即页面顺序：`training` 紧随 `about`（培训为主），`work`（实战交付）紧随 `books`（交付为课程背书），由 `test_training_leads_and_delivery_backs_it_up` 强制；课程事实以 workshop 讲师资料库（产区口径）为源，班型全表、价格、报名方式只在 dropleap.cn/training，本站不展开第二份。
 - 每个 `section` 有唯一 `id`，导航链接必须指向其中之一——当前板块高亮依赖此契约（`js/main.js` 的 IntersectionObserver；`test_every_nav_link_points_at_a_section`）。
 - 每个板块恰有一个 `h2`，标题层级不跳级（`StructureTests`）。
 - 语言解析顺序：`?lang=` URL 参数（命中后持久化）→ `localStorage` → 中文默认。
@@ -66,6 +66,7 @@
 |---|---|
 | `assets/hero/` | 首屏照片（本人登台照 `onstage.jpg`，952×638） |
 | `assets/cases/` | 两张案例配图 |
+| `assets/training/` | 课堂现场照片（苏州 FDE 社区沙龙 2026-11，4 张） |
 | `assets/books/` | 三本书封（两 JPEG 一 SVG） |
 | `assets/logos/` | logo 墙品牌标 + 业务线 icon |
 | `assets/wechat/` | 个人微信二维码 |
@@ -102,7 +103,7 @@ logo 墙的其余品牌标为各品牌官方渠道获取的图形文件，同样
 
 ## 6. 机器可读层（GEO）
 
-- `index.html` 内嵌 JSON-LD `@graph`：Person、Organization、WebSite、ProfilePage、FAQPage（7 问）、Book ×3、Course ×2（FDE 实战营、企业定制内训，`instructor` 指向 Person）。节点间用 `@id` 互链（Person `worksFor` Organization，Organization `founder` Person）。
+- `index.html` 内嵌 JSON-LD `@graph`：Person（jobTitle 讲师前置）、Organization、WebSite、ProfilePage、FAQPage（8 问）、Book ×3、Course ×6（FDE 实战营、企业定制内训、WorkBuddy 全员应用实战、大模型技术基础实战、企业级大模型私有化实战、制造业企业主 AI 通识课，`instructor` 指向 Person）。节点间用 `@id` 互链（Person `worksFor` Organization，Organization `founder` Person）。
 - `llms.txt` 是面向 LLM 爬虫的英文摘要，比页面更详尽（含完整培训体系、行业清单）；`robots.txt` 对 AI 爬虫全量放行。
 - 一致性契约：书名、书 URL、课程名、课程 URL、案例数字、引语在页面 / JSON-LD / llms.txt 三处同源；`dateModified`、sitemap `lastmod`、llms.txt `Last updated` 三处日期一致且不晚于今天（`MachineReadableTests` 交叉断言）。
 

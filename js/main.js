@@ -5,8 +5,8 @@
 
   // 只有英文需要在这里声明；中文一律从文档本身读取，避免 title/description 有两份真相。
   const EN_META = {
-    title: 'Shi Ke — Founder of Dropleap, Enterprise AI Practitioner',
-    description: 'Shi Ke — founder of Dropleap, serial entrepreneur, USTC MSc. Authorized WorkBuddy agent: first manufacturing AI scenario live in 2-4 weeks, 100+ manufacturers served.'
+    title: 'Shi Ke — Enterprise AI Implementation Trainer, Founder of Dropleap',
+    description: 'Shi Ke — enterprise AI trainer and founder of Dropleap, USTC MSc. Authorized WorkBuddy agent: first manufacturing AI scenario live in 2-4 weeks, 100+ manufacturers served. Four course tracks: FDE Bootcamp, WorkBuddy application, hands-on LLM engineering, business-owner AI literacy.'
   };
 
   const navToggle = document.getElementById('navToggle');
